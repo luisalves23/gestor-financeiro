@@ -1,4 +1,6 @@
-// Estado inicial da aplicação
+// ==========================================
+// 1. ESTADO INICIAL DA APLICAÇÃO
+// ==========================================
 let transactions = [
   {
     id: 1,
@@ -21,7 +23,7 @@ let bills = [
   { id: 2, amount: 800.0, status: "pago", description: "Alimentação" },
 ];
 
-// Dicionários de Categorias Catalogadas
+// Dicionários de Categorias Catalogadas (10 para entrada / 10 para saída)
 const categoriesData = {
   revenue: [
     "Corrida Uber",
@@ -49,7 +51,16 @@ const categoriesData = {
   ],
 };
 
-// Mapeamento de novos elementos do DOM para o Formulário Dinâmico
+// Variáveis de controle de fluxo do formulário interno
+let currentFormType = "";
+let tempAmount = 0;
+
+// ==========================================
+// 2. MAPEAMENTO DE ELEMENTOS DO DOM
+// ==========================================
+const transactionsList = document.getElementById("transactions-list");
+const billsList = document.getElementById("bills-list");
+
 const transactionFormContainer = document.getElementById(
   "transaction-form-container",
 );
@@ -59,38 +70,56 @@ const customCategoryWrapper = document.getElementById(
   "custom-category-wrapper",
 );
 
-// Alimenta o elemento Select com as categorias baseadas no tipo de operação
-const populateCategories = (type) => {
-  const list = categoriesData[type];
-  selectCategory.innerHTML = ""; // Limpa seleções anteriores
+const btnAddRevenue = document.getElementById("btn-add-revenue");
+const btnAddExpense = document.getElementById("btn-add-expense");
+const btnNextToCategory = document.getElementById("btn-next-to-category");
+const btnFinalizeTransaction = document.getElementById(
+  "btn-finalize-transaction",
+);
+const inputAmount = document.getElementById("input-amount");
+const inputCustomCategory = document.getElementById("input-custom-category");
+const formStep1 = document.getElementById("form-step-1");
+const formStep2 = document.getElementById("form-step-2");
 
-  list.forEach((category) => {
-    const option = document.createElement("option");
-    option.value = category;
-    option.textContent = category;
-    selectCategory.appendChild(option);
-  });
-};
+// ==========================================
+// 3. FUNÇÕES UTILITÁRIAS E MOTORES DE CÁLCULO
+// ==========================================
 
-// Monitoriza a seleção para exibir o campo de categoria não catalogada
-selectCategory.addEventListener("change", (e) => {
-  if (e.target.value === "Outra...") {
-    customCategoryWrapper.style.display = "block";
-  } else {
-    customCategoryWrapper.style.display = "none";
-  }
-});
-
-// Mapeamento de elementos do DOM
-const transactionsList = document.getElementById("transactions-list");
-const billsList = document.getElementById("bills-list");
-
-// Utilitário para formatar moeda no padrão brasileiro
+// Formata valores numéricos para a moeda padrão Real (BRL)
 const formatCurrency = (value) => {
   return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 };
 
-// Constrói a lista de movimentações
+// Processa o saldo vivo e projeta a meta diária necessária
+const calculateDailyTarget = () => {
+  const totalPendingBills = bills
+    .filter((bill) => bill.status === "pendente")
+    .reduce((sum, bill) => sum + bill.amount, 0);
+
+  const currentBalance = transactions.reduce((sum, transaction) => {
+    return transaction.type === "revenue"
+      ? sum + transaction.amount
+      : sum - transaction.amount;
+  }, 0);
+
+  const daysRemaining = 15; // Fixado para estruturação do MVP linear
+
+  const targetValue =
+    daysRemaining > 0
+      ? Math.ceil((totalPendingBills - currentBalance) / daysRemaining)
+      : 0;
+
+  document.getElementById("current-balance").innerText =
+    formatCurrency(currentBalance);
+  document.getElementById("daily-target").innerText =
+    `Meta: ${formatCurrency(targetValue)} por dia`;
+};
+
+// ==========================================
+// 4. FUNÇÕES DE RENDERIZAÇÃO GRÁFICA
+// ==========================================
+
+// Renderiza dinamicamente a tabela de movimentações diárias
 const renderTransactions = () => {
   transactionsList.innerHTML = `
         <div class="table-row header">
@@ -119,6 +148,7 @@ const renderTransactions = () => {
   });
 };
 
+// Renderiza dinamicamente a tabela de passivos fixos (Contas)
 const renderBills = () => {
   billsList.innerHTML = `
         <div class="table-row header">
@@ -145,68 +175,96 @@ const renderBills = () => {
   });
 };
 
-// Motor de cálculo financeiro
-const calculateDailyTarget = () => {
-  // 1. Somar todas as contas pendentes
-  const totalPendingBills = bills
-    .filter((bill) => bill.status === "pendente")
-    .reduce((sum, bill) => sum + bill.amount, 0);
+// ==========================================
+// 5. MÁQUINA DE ESTADOS DO FORMULÁRIO DINÂMICO
+// ==========================================
 
-  // 2. Calcular o saldo líquido atual das movimentações
-  const currentBalance = transactions.reduce((sum, transaction) => {
-    return transaction.type === "revenue"
-      ? sum + transaction.amount
-      : sum - transaction.amount;
-  }, 0);
+// Injeta as opções do select dinamicamente com base no tipo de operação
+const populateCategories = (type) => {
+  const list = categoriesData[type];
+  selectCategory.innerHTML = "";
 
-  // 3. Simulação de tempo: Definir os dias restantes até o vencimento principal
-  // Para o MVP, fixamos em 15 dias para estruturar a lógica matemática base
-  const daysRemaining = 15;
-
-  // 4. Aplicação da equação matemática base
-  const targetValue =
-    daysRemaining > 0
-      ? Math.ceil((totalPendingBills - currentBalance) / daysRemaining)
-      : 0;
-
-  // 5. Injeção dos valores calculados nos elementos do HTML
-  document.getElementById("current-balance").innerText =
-    formatCurrency(currentBalance);
-  document.getElementById("daily-target").innerText =
-    `Meta: ${formatCurrency(targetValue)} por dia`;
+  list.forEach((category) => {
+    const option = document.createElement("option");
+    option.value = category;
+    option.textContent = category;
+    selectCategory.appendChild(option);
+  });
 };
 
-// Manipulação de Entradas do Usuário via Eventos
-const handleAddRevenue = () => {
-  const description = prompt("Digite a descrição do ganho (ex: Corrida Uber):");
-  const amountInput = prompt(
-    "Digite o valor bruto em Reais (use ponto para centavos):",
-  );
-  const amount = parseFloat(amountInput);
+// Configura a exibição inicial do formulário inline
+const openTransactionForm = (type) => {
+  currentFormType = type;
+  transactionFormContainer.style.display = "block";
+  formStep1.style.display = "block";
+  formStep2.style.display = "none";
+  customCategoryWrapper.style.display = "none";
 
-  if (description && !isNaN(amount) && amount > 0) {
-    transactions.push({
-      id: transactions.length + 1,
-      type: "revenue",
-      amount: amount,
-      status: "recebido",
-      description: description,
-    });
+  inputAmount.value = "";
+  inputCustomCategory.value = "";
 
-    // Reflete as mudanças na interface instantaneamente
-    renderTransactions();
-    calculateDailyTarget();
+  transactionFormContainer.className = `transaction-form-card state-${type}`;
+  formTitleText.textContent =
+    type === "revenue" ? "Inserir Ganho" : "Inserir Despesa";
+
+  populateCategories(type);
+};
+
+// Valida a primeira etapa (valor) e avança para a próxima tela
+const handleNextStep = () => {
+  const amount = parseFloat(inputAmount.value);
+  if (!isNaN(amount) && amount > 0) {
+    tempAmount = amount;
+    formStep1.style.display = "none";
+    formStep2.style.display = "block";
   } else {
-    alert("Dados inválidos. A operação foi cancelada.");
+    alert("Por favor, introduza um valor válido maior que zero.");
   }
 };
 
-// Vinculação dos botões aos escutadores de eventos
-document
-  .getElementById("btn-add-revenue")
-  .addEventListener("click", handleAddRevenue);
+// Processa o fechamento e salva a informação no estado
+const handleFinalizeTransaction = () => {
+  let selectedCategory = selectCategory.value;
 
-// Inicializa a injeção de dados ao carregar a página
+  if (selectedCategory === "Outra...") {
+    selectedCategory = inputCustomCategory.value.trim();
+  }
+
+  if (!selectedCategory) {
+    alert("Por favor, defina a categoria do lançamento.");
+    return;
+  }
+
+  transactions.push({
+    id: transactions.length + 1,
+    type: currentFormType,
+    amount: tempAmount,
+    status: currentFormType === "revenue" ? "recebido" : "pendente",
+    description: selectedCategory,
+  });
+
+  transactionFormContainer.style.display = "none";
+  renderTransactions();
+  calculateDailyTarget();
+};
+
+// ==========================================
+// 6. ADICIONA OS ESCUTADORES DE EVENTOS (LISTENERS)
+// ==========================================
+selectCategory.addEventListener("change", (e) => {
+  if (e.target.value === "Outra...") {
+    customCategoryWrapper.style.display = "block";
+  } else {
+    customCategoryWrapper.style.display = "none";
+  }
+});
+
+btnAddRevenue.addEventListener("click", () => openTransactionForm("revenue"));
+btnAddExpense.addEventListener("click", () => openTransactionForm("expense"));
+btnNextToCategory.addEventListener("click", handleNextStep);
+btnFinalizeTransaction.addEventListener("click", handleFinalizeTransaction);
+
+// Inicialização global do sistema ao carregar o script
 const init = () => {
   renderTransactions();
   renderBills();

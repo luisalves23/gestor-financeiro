@@ -88,3 +88,9 @@ Aplicativo de planejamento financeiro pessoal desenvolvido para organizar receit
 * **O que foi feito:** Defini o objeto `categoriesData` com 10 categorias mapeadas para cada tipo de transação e criei a função `populateCategories` junto ao evento de escuta do select.
 * **Commit Realizado:** feat: implementa catalogo de categorias e logica de expansao inline
 * **Raciocínio:** Isolar os dados das categorias num objeto estruturado permite alternar as opções exibidas de forma dinâmica sem duplicar elementos no HTML. O ouvinte de alteração (`change`) monitoriza a escolha do utilizador e exibe o campo oculto para categorias não catalogadas de forma condicional, mantendo a interface limpa.
+
+### 17/06/2026 | 11:03
+* **Etapa:** Reestruturação do fluxo de entrada (Parte 4 de 4) - Controle de Fluxo e Consolidação.
+* **O que foi feito:** Desenvolvi as funções `openTransactionForm`, `handleNextStep` e `handleFinalizeTransaction`, acoplando os escutadores de eventos para gerir a máquina de estados do formulário inline.
+* **Commit Realizado:** feat: consolida controle de etapas e salvamento do formulario dinamico
+* **Raciocínio:** Concluí a substituição dos prompts nativos. O formulário agora opera em duas etapas isoladas dentro da própria interface: valida o valor na primeira tela, carrega as categorias corretas na segunda e injeta o objeto final no array de movimentações. Isso garante uma experiência totalmente integrada e fluida para o uso diário no computador ou tablet.
