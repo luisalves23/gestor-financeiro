@@ -159,13 +159,22 @@ Aplicativo de planejamento financeiro pessoal desenvolvido para organizar receit
 - **Raciocínio:** Isolar os estilos de cor no CSS garante a separação estrita de responsabilidades. Para manter a legibilidade e a harmonia estética do design system, injetei regras descendentes que alteram automaticamente a cor das fontes dos botões "Adicionar" e "-" de acordo com o fundo atual do card, evitando contrastes opacos e mantendo o visual limpo.
 
 ### 17/06/2026 | 11:36
-* **Etapa:** Configuração de Modificadores Cromáticos para Mapeamento de Metas (Parte 2 de 2).
-* **O que foi feito:** Ajustei a função `calculateDailyTarget` para isolar o cálculo da meta base ideal e implementar uma cadeia de condicionais (`if/else if`) que mapeia percentualmente o atingimento da meta, além de adicionar uma regra direta para forçar a cor vermelha em saldos matematicamente negativos.
-* **Commit Realizado:** feat: implementa inteligencia matematica no motor de semaforo de performance
-* **Raciocínio:** Para o painel refletir a evolução diária corretamente, precisei de criar uma variável `baseTarget` que desconsidera o saldo em caixa (diferente da meta que é exibida em tela e é móvel). Com essa régua fixa, a aplicação sabe exatamente quanto seria o esforço do dia a partir do zero e, com as condicionais, engatilha as classes `status-danger`, `warning`, `success` ou `premium` dinamicamente conforme os lançamentos são inseridos ou excluídos.
+
+- **Etapa:** Configuração de Modificadores Cromáticos para Mapeamento de Metas (Parte 2 de 2).
+- **O que foi feito:** Ajustei a função `calculateDailyTarget` para isolar o cálculo da meta base ideal e implementar uma cadeia de condicionais (`if/else if`) que mapeia percentualmente o atingimento da meta, além de adicionar uma regra direta para forçar a cor vermelha em saldos matematicamente negativos.
+- **Commit Realizado:** feat: implementa inteligencia matematica no motor de semaforo de performance
+- **Raciocínio:** Para o painel refletir a evolução diária corretamente, precisei de criar uma variável `baseTarget` que desconsidera o saldo em caixa (diferente da meta que é exibida em tela e é móvel). Com essa régua fixa, a aplicação sabe exatamente quanto seria o esforço do dia a partir do zero e, com as condicionais, engatilha as classes `status-danger`, `warning`, `success` ou `premium` dinamicamente conforme os lançamentos são inseridos ou excluídos.
 
 ### 17/06/2026 | 11:50
-* **Etapa:** Configuração do Novo Grid de Dashboard Responsivo (Parte 1 de 5).
-* **O que foi feito:** Reestruturei o esqueleto semântico do HTML criando a área de `.top-cards-grid` para abrigar os cartões gêmeos de Saldo e Contas Fixas. Reformulei o CSS Grid das listagens para operarem lado a lado no desktop.
-* **Commit Realizado:** layout: implementa malha de dashboard simetrico com duas colunas de visualizacao
-* **Raciocínio:** O layout anterior sacrificava a área útil de telas maiores prendendo as tabelas em uma única coluna vertical. Ao isolar os resumos no topo com largura flexível e quebrar as listas em tags `.data-column` independentes, criei um visual limpo e profissional. No mobile, as regras de herança do CSS Grid empilham os blocos de forma automática, preservando a usabilidade em qualquer dispositivo.
+
+- **Etapa:** Configuração do Novo Grid de Dashboard Responsivo (Parte 1 de 5).
+- **O que foi feito:** Reestruturei o esqueleto semântico do HTML criando a área de `.top-cards-grid` para abrigar os cartões gêmeos de Saldo e Contas Fixas. Reformulei o CSS Grid das listagens para operarem lado a lado no desktop.
+- **Commit Realizado:** layout: implementa malha de dashboard simetrico com duas colunas de visualizacao
+- **Raciocínio:** O layout anterior sacrificava a área útil de telas maiores prendendo as tabelas em uma única coluna vertical. Ao isolar os resumos no topo com largura flexível e quebrar as listas em tags `.data-column` independentes, criei um visual limpo e profissional. No mobile, as regras de herança do CSS Grid empilham os blocos de forma automática, preservando a usabilidade em qualquer dispositivo.
+
+### 17/06/2026 | 11:55
+
+- **Etapa:** Configuração do Novo Grid de Dashboard Responsivo (Parte 2 de 5) - Componente de Calendário no Modal.
+- **O que foi feito:** Adaptei a Etapa 2 do modal flutuante no `index.html` para incluir um campo nativo de data (`type="date"`) envolto em um `date-wrapper` oculto. No CSS, injetei um filtro de inversão para tornar o ícone nativo do calendário branco.
+- **Commit Realizado:** feat: insere estrutura de captura de tempo no modal dinamico
+- **Raciocínio:** Adotar um único modal para todas as inserções limpa a interface e evita fadiga visual. A estratégia arquitetural aqui é injetar o campo de data no formulário existente de forma encapsulada (`display: none`). O JavaScript assumirá a inteligência de exibir esse campo exclusivamente quando a intenção do usuário for cadastrar um passivo ("Conta"). O filtro CSS `invert(1)` é uma solução de engenharia cirúrgica para contornar limitações de customização impostas por navegadores sobre inputs de tempo nativos.

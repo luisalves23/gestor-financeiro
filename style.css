@@ -42,7 +42,7 @@ header {
 }
 
 /* ===================================================
-   GRADE SUPERIOR: CARDS DE RESUMO (PASSO 16.1)
+   GRADE SUPERIOR: CARDS DE RESUMO
    =================================================== */
 .top-cards-grid {
   display: grid;
@@ -110,7 +110,6 @@ header {
   margin-bottom: 20px;
 }
 
-/* Sinalizadores dinâmicos do Card de Saldo */
 .overview-card.status-danger { background-color: #f46a6a; }
 .overview-card.status-warning { background-color: #f1b44c; }
 .overview-card.status-success { background-color: #34c38f; }
@@ -195,13 +194,12 @@ header {
 .badge.recebido { background-color: #d4edda; color: #34c38f; }
 .badge.pago { background-color: #cce5ff; color: #556ee6; }
 
-/* BREAKPOINT TABLET/DESKTOP: Lado a Lado Completo */
 @media (min-width: 800px) {
   .top-cards-grid {
-    grid-template-columns: 1fr 1fr; /* Cards lado a lado */
+    grid-template-columns: 1fr 1fr; 
   }
   #app-content {
-    grid-template-columns: 1fr 1fr; /* Tabelas lado a lado */
+    grid-template-columns: 1fr 1fr; 
     align-items: start;
   }
   .app-wrapper {
@@ -264,6 +262,17 @@ header {
 .input-group input::-webkit-outer-spin-button, .input-group input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .input-group input[type=number] { -moz-appearance: textfield; }
 
+/* Inversão do ícone de calendário nativo para ficar branco no fundo colorido */
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
 .transaction-form-card.state-revenue .input-group input::placeholder,
 .transaction-form-card.state-revenue .custom-category-group input::placeholder {
   color: #bbf3db !important;
@@ -279,7 +288,8 @@ header {
 .transaction-form-card.state-revenue .form-select,
 .transaction-form-card.state-expense .form-select,
 .transaction-form-card.state-revenue .custom-category-group input,
-.transaction-form-card.state-expense .custom-category-group input {
+.transaction-form-card.state-expense .custom-category-group input,
+.transaction-form-card.state-expense input[type="date"] {
   background-color: rgba(255, 255, 255, 0.18);
   border: 1px solid rgba(255, 255, 255, 0.25);
   color: #ffffff;

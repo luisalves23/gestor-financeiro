@@ -73,8 +73,10 @@
       </div>
 
       <div class="form-step" id="form-step-2" style="display: none">
-        <h3 class="form-step-title">Selecionar Categoria</h3>
+        <h3 class="form-step-title" id="step-2-title">Selecionar Categoria</h3>
+
         <select id="select-category" class="form-select"></select>
+
         <div
           class="custom-category-group"
           id="custom-category-wrapper"
@@ -86,6 +88,26 @@
             placeholder="Nome da nova categoria"
           />
         </div>
+
+        <div id="date-wrapper" style="display: none; width: 100%">
+          <label
+            style="
+              display: block;
+              font-size: 12px;
+              margin-bottom: 8px;
+              color: rgba(255, 255, 255, 0.8);
+              font-weight: 600;
+            "
+            >DATA DE VENCIMENTO</label
+          >
+          <input
+            type="date"
+            id="input-due-date"
+            class="form-select"
+            style="margin-bottom: 16px"
+          />
+        </div>
+
         <button class="btn-submit-form" id="btn-finalize-transaction">
           Salvar Lançamento
         </button>
