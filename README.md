@@ -187,7 +187,15 @@ Aplicativo de planejamento financeiro pessoal desenvolvido para organizar receit
 - **Raciocínio:** Modificar a arquitetura de dados (schema) com usuários em "produção" requer cuidado. Se eu não alterasse a chave do `localStorage`, a nova versão do código calcularia o tempo contra contas que não possuíam data, devolvendo quebras matemáticas crônicas (`NaN`). Alterar a chave para `gf_bills_v2` funciona como um "Wipe" (limpeza) seguro de banco de dados, forçando o navegador a baixar a nova estrutura limpa de demonstração que inclui as datas de vencimento, preparando o terreno para o motor matemático na próxima fase.
 
 ### 17/06/2026 | 12:05
-* **Etapa:** Configuração do Novo Grid de Dashboard Responsivo (Parte 4 de 5) - Motor Temporal Híbrido.
-* **O que foi feito:** Substituí a matemática de dias fixos do `calculateDailyTarget` por um motor de tempo real baseado na classe `Date()`. Programei a divisão lógica entre passivos futuros e atrasados, aplicando a regra de amortização máxima de R$ 100,00 diários.
-* **Commit Realizado:** feat: implementa motor de calculo temporal com amortizacao de atraso limitada
-* **Raciocínio:** Implementar a inteligência do tempo mudou o patamar lógico da aplicação. Agora o sistema varre as contas abertas, calcula a distância exata de dias em relação ao dia de hoje zerado e separa o faturamento de forma justa: o que é futuro divide-se pelos dias restantes; o que está vencido soma-se ao esforço do dia respeitando o teto psicológico de R$ 100,00. O saldo feito no dia abate o resultado final de forma contínua, retroalimentando as cores do semáforo.
+
+- **Etapa:** Configuração do Novo Grid de Dashboard Responsivo (Parte 4 de 5) - Motor Temporal Híbrido.
+- **O que foi feito:** Substituí a matemática de dias fixos do `calculateDailyTarget` por um motor de tempo real baseado na classe `Date()`. Programei a divisão lógica entre passivos futuros e atrasados, aplicando a regra de amortização máxima de R$ 100,00 diários.
+- **Commit Realizado:** feat: implementa motor de calculo temporal com amortizacao de atraso limitada
+- **Raciocínio:** Implementar a inteligência do tempo mudou o patamar lógico da aplicação. Agora o sistema varre as contas abertas, calcula a distância exata de dias em relação ao dia de hoje zerado e separa o faturamento de forma justa: o que é futuro divide-se pelos dias restantes; o que está vencido soma-se ao esforço do dia respeitando o teto psicológico de R$ 100,00. O saldo feito no dia abate o resultado final de forma contínua, retroalimentando as cores do semáforo.
+
+### 17/06/2026 | 12:15
+
+- **Etapa:** Configuração do Novo Grid de Dashboard Responsivo (Parte 5 de 5) - Multiplexador de Modal e Indicadores de Urgência.
+- **O que foi feito:** Adaptei as funções `openTransactionForm` e `handleFinalizeTransaction` para suportar o tipo de operação `'bill'`. Apliquei validação de campo vazio para datas e programei as etiquetas da tabela para injetarem estilos inline de alerta (Atrasada / Vence Hoje) baseados na classe Date do JavaScript.
+- **Commit Realizado:** feat: acopla formulario de captura de contas fixas e alertas de listagem
+- **Raciocínio:** Para evitar duplicação extrema de código no arquivo HTML, apliquei o conceito de "Multiplexação de Componente". A mesma estrutura visual do modal de diárias se adapta quando chamada pelo botão "+ Conta", revelando o calendário oculto e alterando a rota de salvamento dos dados para o array `bills`. Ao calcular dinamicamente a urgência diretamente na função de renderização, os passivos perigosos ganham destaque automático com bordas sólidas vermelhas ou amarelas que capturam imediatamente a atenção, sem demandar novas classes estáticas do CSS.

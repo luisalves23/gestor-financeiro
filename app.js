@@ -88,12 +88,17 @@ const customCategoryWrapper = document.getElementById(
 
 const btnAddRevenue = document.getElementById("btn-add-revenue");
 const btnAddExpense = document.getElementById("btn-add-expense");
+const btnOpenBillModal = document.getElementById("btn-open-bill-modal"); // NOVO BOTÃO DE CONTAS
 const btnNextToCategory = document.getElementById("btn-next-to-category");
 const btnFinalizeTransaction = document.getElementById(
   "btn-finalize-transaction",
 );
+
 const inputAmount = document.getElementById("input-amount");
 const inputCustomCategory = document.getElementById("input-custom-category");
+const inputDueDate = document.getElementById("input-due-date"); // NOVO INPUT DE DATA
+const dateWrapper = document.getElementById("date-wrapper"); // NOVO CONTAINER DA DATA
+
 const formStep1 = document.getElementById("form-step-1");
 const formStep2 = document.getElementById("form-step-2");
 
@@ -110,9 +115,8 @@ const formatCurrency = (value) => {
   return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 };
 
-// NOVO: MOTOR FINANCEIRO HÍBRIDO COM INTELIGÊNCIA TEMPORAL (PASSO 16.4)
+// Motor Financeiro Híbrido com Inteligência Temporal
 const calculateDailyTarget = () => {
-  // Captura o milissegundo exato de agora e zera as horas para a comparação ser justa
   const now = new Date();
   const todayZero = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
@@ -121,51 +125,40 @@ const calculateDailyTarget = () => {
   let totalContasObrigacoes = 0;
 
   bills.forEach((bill) => {
-    if (bill.status === "pago") return; // Ignora os passivos liquidados
+    if (bill.status === "pago") return;
 
     totalContasObrigacoes += bill.amount;
 
-    // Converte a string ISO 'YYYY-MM-DD' em um objeto de tempo real do JS
     const [bYear, bMonth, bDay] = bill.dueDate.split("-");
     const billDate = new Date(bYear, bMonth - 1, bDay);
 
-    // Calcula a diferença bruta de tempo em milissegundos
     const diffTime = billDate - todayZero;
-    // Transforma milissegundos em dias arredondando para cima
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
     if (diffDays <= 0) {
-      // Regra de Atraso: Se a diferença for zero (vence hoje) ou menor que zero (já venceu)
       totalAtrasado += bill.amount;
     } else {
-      // Regra Futura: Distribui o peso da conta estritamente pelos dias que faltam
       cargaFuturaDiaria += bill.amount / diffDays;
     }
   });
 
-  // Calcula o caixa líquido feito nas corridas de hoje
   const currentBalance = transactions.reduce((sum, transaction) => {
     return transaction.type === "revenue"
       ? sum + transaction.amount
       : sum - transaction.amount;
   }, 0);
 
-  // Aplicação da sua ideia: Teto de esforço diário travado em no máximo R$ 100 para o atraso
   const cargaAtrasoDiaria = Math.min(totalAtrasado, 100);
-
-  // A equação une as duas cargas e abate em tempo real o que você já produziu de saldo
   const metaDoDia = Math.ceil(
     cargaFuturaDiaria + cargaAtrasoDiaria - currentBalance,
   );
   const displayTarget = metaDoDia > 0 ? metaDoDia : 0;
 
-  // Atualização dos elementos de texto do Card de Saldo
   document.getElementById("current-balance").innerText =
     formatCurrency(currentBalance);
   document.getElementById("daily-target").innerText =
     `Meta: ${formatCurrency(displayTarget)} por dia`;
 
-  // Atualização das métricas internas do Card de Resumo de Contas (Passo 16.1)
   document.getElementById("bills-total").innerText = formatCurrency(
     totalContasObrigacoes,
   );
@@ -173,13 +166,12 @@ const calculateDailyTarget = () => {
 
   if (totalAtrasado > 0) {
     remainingTextElement.innerText = `Atenção: ${formatCurrency(totalAtrasado)} em atraso`;
-    remainingTextElement.style.color = "#f46a6a"; // Texto vermelho de alerta
+    remainingTextElement.style.color = "#f46a6a";
   } else {
     remainingTextElement.innerText = "Todas as obrigações em dia";
     remainingTextElement.style.color = "";
   }
 
-  // Alinhamento do Semáforo Cromático baseado no esforço ideal puro calculado para hoje
   const escorçoIdealDia = cargaFuturaDiaria + cargaAtrasoDiaria;
   overviewCard.className = "overview-card";
 
@@ -248,21 +240,42 @@ const renderBills = () => {
         </div>
     `;
 
-  bills.forEach((bill) => {
-    const statusText =
-      bill.status.charAt(0).toUpperCase() + bill.status.slice(1);
+  const now = new Date();
+  const todayZero = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
+  bills.forEach((bill) => {
+    let statusText = bill.status.charAt(0).toUpperCase() + bill.status.slice(1);
     let dateDisplay = "";
+    let inlineStyle = "";
+
     if (bill.dueDate) {
       const [year, month, day] = bill.dueDate.split("-");
       dateDisplay = `${day}/${month} - `;
+
+      // Lógica de Etiquetas Dinâmicas de Urgência
+      if (bill.status !== "pago") {
+        const billDate = new Date(year, month - 1, day);
+        const diffDays = Math.ceil(
+          (billDate - todayZero) / (1000 * 60 * 60 * 24),
+        );
+
+        if (diffDays < 0) {
+          statusText = `Atrasada (${Math.abs(diffDays)}d)`;
+          inlineStyle =
+            "background-color: #fdf5f5; color: #f46a6a; border: 1px solid #f46a6a;"; // Alerta Vermelho
+        } else if (diffDays === 0) {
+          statusText = `Vence Hoje`;
+          inlineStyle =
+            "background-color: #fff4de; color: #f1b44c; border: 1px solid #f1b44c;"; // Alerta Laranja
+        }
+      }
     }
 
     const row = document.createElement("div");
     row.className = "table-row";
     row.innerHTML = `
             <div>${formatCurrency(bill.amount)}</div>
-            <div><span class="badge ${bill.status}">${dateDisplay}${statusText}</span></div>
+            <div><span class="badge ${bill.status}" style="${inlineStyle}">${dateDisplay}${statusText}</span></div>
             <div>${bill.description}</div>
             <div><button class="btn-delete" data-id="${bill.id}">✖</button></div>
         `;
@@ -275,7 +288,9 @@ const renderBills = () => {
 // ==========================================
 
 const populateCategories = (type) => {
-  const list = categoriesData[type];
+  // Se for 'bill', usa as categorias de despesa
+  const listType = type === "bill" ? "expense" : type;
+  const list = categoriesData[listType];
   selectCategory.innerHTML = "";
 
   list.forEach((category) => {
@@ -286,6 +301,7 @@ const populateCategories = (type) => {
   });
 };
 
+// Multiplexador de Modais: Configura a interface com base no botão clicado
 const openTransactionForm = (type) => {
   currentFormType = type;
   transactionFormContainer.style.display = "flex";
@@ -295,10 +311,18 @@ const openTransactionForm = (type) => {
 
   inputAmount.value = "";
   inputCustomCategory.value = "";
+  inputDueDate.value = ""; // Limpa a data
 
-  transactionFormContainer.className = `transaction-form-card state-${type}`;
-  formTitleText.textContent =
-    type === "revenue" ? "Inserir Ganho" : "Inserir Despesa";
+  if (type === "bill") {
+    transactionFormContainer.className = `transaction-form-card state-expense`; // Usa o fundo vermelho
+    formTitleText.textContent = "Inserir Conta Fixa";
+    dateWrapper.style.display = "block"; // Revela o calendário
+  } else {
+    transactionFormContainer.className = `transaction-form-card state-${type}`;
+    formTitleText.textContent =
+      type === "revenue" ? "Inserir Ganho" : "Inserir Despesa";
+    dateWrapper.style.display = "none"; // Esconde o calendário
+  }
 
   populateCategories(type);
 };
@@ -332,20 +356,38 @@ const handleFinalizeTransaction = () => {
     return;
   }
 
-  transactions.push({
-    id:
-      transactions.length > 0
-        ? transactions[transactions.length - 1].id + 1
-        : 1,
-    type: currentFormType,
-    amount: tempAmount,
-    status: currentFormType === "revenue" ? "recebido" : "pendente",
-    description: selectedCategory,
-  });
+  // Roteamento condicional de salvamento
+  if (currentFormType === "bill") {
+    const dueDate = inputDueDate.value;
+    if (!dueDate) {
+      alert("Por favor, defina a data de vencimento da conta.");
+      return;
+    }
+
+    bills.push({
+      id: bills.length > 0 ? bills[bills.length - 1].id + 1 : 1,
+      amount: tempAmount,
+      status: "pendente",
+      description: selectedCategory,
+      dueDate: dueDate,
+    });
+  } else {
+    transactions.push({
+      id:
+        transactions.length > 0
+          ? transactions[transactions.length - 1].id + 1
+          : 1,
+      type: currentFormType,
+      amount: tempAmount,
+      status: currentFormType === "revenue" ? "recebido" : "pendente",
+      description: selectedCategory,
+    });
+  }
 
   saveData();
   closeTransactionForm();
   renderTransactions();
+  renderBills(); // Redesenha a lista de contas garantindo que a nova apareça
   calculateDailyTarget();
 };
 
@@ -382,6 +424,7 @@ selectCategory.addEventListener("change", (e) => {
 
 btnAddRevenue.addEventListener("click", () => openTransactionForm("revenue"));
 btnAddExpense.addEventListener("click", () => openTransactionForm("expense"));
+btnOpenBillModal.addEventListener("click", () => openTransactionForm("bill")); // ESCUTADOR DO CARD DE CONTAS
 btnNextToCategory.addEventListener("click", handleNextStep);
 btnFinalizeTransaction.addEventListener("click", handleFinalizeTransaction);
 
