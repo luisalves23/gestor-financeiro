@@ -70,3 +70,9 @@ Aplicativo de planejamento financeiro pessoal desenvolvido para organizar receit
 * **O que foi feito:** Desenvolvi a função `handleAddRevenue` associada ao evento `click` do botão de inserção, permitindo injetar novas receitas no array de transações em tempo real.
 * **Commit Realizado:** feat: adiciona escutador de eventos para insercao de novas receitas
 * **Raciocínio:** Este passo valida a reatividade da aplicação. Ao isolar a lógica de captação de dados numa função que dispara os gatilhos de renderização e cálculo sequencialmente, garanto que o utilizador veja o seu saldo subir e a sua meta diária descer no exato segundo em que finaliza o lançamento.
+
+### 17/06/2026 | 10:37
+* **Etapa:** Reestruturação do fluxo de entrada (Parte 1 de 4) - Estrutura do Card Semântico.
+* **O que foi feito:** Eliminei o uso de prompts nativos e criei a estrutura HTML do `transaction-form-card`, dividida em duas etapas de captura (valor e categoria) com campos específicos de entrada.
+* **Commit Realizado:** feat: estrutura esqueleto do formulario dinâmico em etapas no html
+* **Raciocínio:** Substituir caixas de diálogo nativas por componentes inline é essencial para a maturidade do produto. Dividi o formulário em blocos lógicos (`form-step`) para permitir que a interface guie o usuário de forma minimalista, preparando o documento para receber a estilização condicional nas próximas etapas.
