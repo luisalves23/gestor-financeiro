@@ -100,3 +100,15 @@ Aplicativo de planejamento financeiro pessoal desenvolvido para organizar receit
 * **O que foi feito:** Atualizei a função `openTransactionForm` para utilizar display flexível, criei a função de descarte `closeTransactionForm` e adicionei um escutador de eventos no fundo desfocado para encerramento automático.
 * **Commit Realizado:** feat: adapta fluxo javascript para fechar modal e renderizar flexbox
 * **Raciocínio:** Integrar o CSS flutuante exigiu repensar o controle da interface no JS. Utilizar `display: flex` assegura que o card flutue no centro geométrico de qualquer tela. O novo evento de escuta verifica a origem do clique (`e.target === transactionFormContainer`); se o usuário clicar no fundo escuro, a aplicação entende que ele desistiu do preenchimento, esvazia as variáveis de fluxo e oculta a tela de forma segura sem lançar dados corrompidos.
+
+### 17/06/2026 | 11:30
+* **Etapa:** Implementação de Persistência de Dados (Local Storage).
+* **O que foi feito:** Substituí as variáveis estáticas do estado por chamadas ao `localStorage`, criei os arrays de fallback `defaultTransactions` e `defaultBills`, e introduzi a função `saveData()` para registrar mutações no disco do navegador.
+* **Commit Realizado:** feat: implementa persistencia de dados no local storage
+* **Raciocínio:** Para que o MVP seja utilizável na rua, os dados não podem viver apenas na memória volátil (RAM). Ao transformar os objetos JavaScript em strings JSON e gravá-los no armazenamento local do browser, garantimos que o usuário possa fechar a aba, desligar a tela e, ao retornar, todo o seu caixa e passivos estejam perfeitamente preservados.
+
+### 17/06/2026 | 11:45
+* **Etapa:** Funcionalidade de Exclusão (Parte 1 de 2) - Interface de Ação.
+* **O que foi feito:** Substituí a seta estática decorativa nas tabelas por botões semânticos de exclusão ('✖'). Utilizei o atributo `data-id` nos botões do JS e implementei o feedback visual no CSS.
+* **Commit Realizado:** style: adiciona botoes interativos de exclusao nas listas de dados
+* **Raciocínio:** O atributo `data-id` que coloquei em cada botão de exclusão injetado pelo JavaScript será vital no próximo passo. Ele embute a "identidade" daquela transação diretamente no código HTML, permitindo que a função de apagar saiba exatamente qual objeto do array deve ser aniquilado.

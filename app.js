@@ -1,57 +1,36 @@
 // ==========================================
-// 1. ESTADO INICIAL DA APLICAÇÃO
+// 1. ESTADO INICIAL DA APLICAÇÃO (AGORA COM PERSISTÊNCIA)
 // ==========================================
-let transactions = [
-  {
-    id: 1,
-    type: "expense",
-    amount: 20.0,
-    status: "pendente",
-    description: "Combustível",
-  },
-  {
-    id: 2,
-    type: "revenue",
-    amount: 120.0,
-    status: "recebido",
-    description: "Diária Uber",
-  },
+
+// Dados de demonstração (fallback) caso seja a primeira vez abrindo o app
+const defaultTransactions = [
+  { id: 1, type: "expense", amount: 20.0, status: "pendente", description: "Combustível" },
+  { id: 2, type: "revenue", amount: 120.0, status: "recebido", description: "Diária Uber" },
 ];
 
-let bills = [
+const defaultBills = [
   { id: 1, amount: 1080.0, status: "pendente", description: "Aluguel" },
   { id: 2, amount: 800.0, status: "pago", description: "Alimentação" },
 ];
 
-// Dicionários de Categorias Catalogadas (10 para entrada / 10 para saída)
+// O sistema tenta puxar do disco do navegador. Se vier vazio (null), ele usa o default.
+let transactions = JSON.parse(localStorage.getItem('gf_transactions')) || defaultTransactions;
+let bills = JSON.parse(localStorage.getItem('gf_bills')) || defaultBills;
+
+// Dicionários de Categorias Catalogadas
 const categoriesData = {
   revenue: [
-    "Corrida Uber",
-    "Viagem InDrive",
-    "Entrega Frete",
-    "Particular",
-    "Freelance Dev",
-    "Design Freelance",
-    "Gorjeta",
-    "Bónus Plataforma",
-    "Reembolso",
-    "Outra...",
+    "Corrida Uber", "Viagem InDrive", "Entrega Frete", "Particular",
+    "Freelance Dev", "Design Freelance", "Gorjeta", "Bónus Plataforma",
+    "Reembolso", "Outra...",
   ],
   expense: [
-    "Combustível",
-    "Alimentação Rua",
-    "Mecânica / Revisão",
-    "Lava Jato",
-    "Pedágio",
-    "Internet / Celular",
-    "Seguro Auto",
-    "Estacionamento",
-    "Equipamento",
-    "Outra...",
+    "Combustível", "Alimentação Rua", "Mecânica / Revisão", "Lava Jato",
+    "Pedágio", "Internet / Celular", "Seguro Auto", "Estacionamento",
+    "Equipamento", "Outra...",
   ],
 };
 
-// Variáveis de controle de fluxo do formulário interno
 let currentFormType = "";
 let tempAmount = 0;
 
@@ -79,12 +58,18 @@ const formStep2 = document.getElementById("form-step-2");
 // 3. FUNÇÕES UTILITÁRIAS E MOTORES DE CÁLCULO
 // ==========================================
 
-// Formata valores numéricos para a moeda padrão Real (BRL)
+// Salva o estado atual no disco (Local Storage)
+const saveData = () => {
+  localStorage.setItem('gf_transactions', JSON.stringify(transactions));
+  localStorage.setItem('gf_bills', JSON.stringify(bills));
+};
+
+// Formata valores numéricos
 const formatCurrency = (value) => {
   return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 };
 
-// Processa o saldo vivo e projeta a meta diária necessária
+// Processa o saldo vivo e projeta a meta
 const calculateDailyTarget = () => {
   const totalPendingBills = bills
     .filter((bill) => bill.status === "pendente")
@@ -96,7 +81,7 @@ const calculateDailyTarget = () => {
       : sum - transaction.amount;
   }, 0);
 
-  const daysRemaining = 15; // Fixado para estruturação do MVP linear
+  const daysRemaining = 15;
 
   const targetValue =
     daysRemaining > 0
@@ -113,7 +98,6 @@ const calculateDailyTarget = () => {
 // 4. FUNÇÕES DE RENDERIZAÇÃO GRÁFICA
 // ==========================================
 
-// Renderiza dinamicamente a tabela de movimentações diárias
 const renderTransactions = () => {
   transactionsList.innerHTML = `
         <div class="table-row header">
@@ -136,13 +120,12 @@ const renderTransactions = () => {
             <div>${sign} ${formatCurrency(transaction.amount)}</div>
             <div><span class="badge ${transaction.status}">${statusText}</span></div>
             <div>${transaction.description}</div>
-            <div class="arrow">▼</div>
+            <div><button class="btn-delete" data-id="${transaction.id}">✖</button></div>
         `;
     transactionsList.appendChild(row);
   });
 };
 
-// Renderiza dinamicamente a tabela de passivos fixos (Contas)
 const renderBills = () => {
   billsList.innerHTML = `
         <div class="table-row header">
@@ -163,7 +146,7 @@ const renderBills = () => {
             <div>${formatCurrency(bill.amount)}</div>
             <div><span class="badge ${bill.status}">${statusText}</span></div>
             <div>${bill.description}</div>
-            <div class="arrow">▼</div>
+            <div><button class="btn-delete" data-id="${bill.id}">✖</button></div>
         `;
     billsList.appendChild(row);
   });
@@ -173,7 +156,6 @@ const renderBills = () => {
 // 5. MÁQUINA DE ESTADOS DO FORMULÁRIO DINÂMICO
 // ==========================================
 
-// Injeta as opções do select dinamicamente com base no tipo de operação
 const populateCategories = (type) => {
   const list = categoriesData[type];
   selectCategory.innerHTML = "";
@@ -186,10 +168,9 @@ const populateCategories = (type) => {
   });
 };
 
-// Configura a exibição inicial do formulário overlay modal
 const openTransactionForm = (type) => {
   currentFormType = type;
-  transactionFormContainer.style.display = "flex"; // Alterado de block para flex para centralizar
+  transactionFormContainer.style.display = "flex";
   formStep1.style.display = "block";
   formStep2.style.display = "none";
   customCategoryWrapper.style.display = "none";
@@ -204,14 +185,12 @@ const openTransactionForm = (type) => {
   populateCategories(type);
 };
 
-// Limpa e oculta o formulário de forma segura
 const closeTransactionForm = () => {
   transactionFormContainer.style.display = "none";
   currentFormType = "";
   tempAmount = 0;
 };
 
-// Valida a primeira etapa (valor) e avança para a próxima tela
 const handleNextStep = () => {
   const amount = parseFloat(inputAmount.value);
   if (!isNaN(amount) && amount > 0) {
@@ -223,7 +202,6 @@ const handleNextStep = () => {
   }
 };
 
-// Processa o fechamento e salva a informação no estado
 const handleFinalizeTransaction = () => {
   let selectedCategory = selectCategory.value;
 
@@ -236,15 +214,17 @@ const handleFinalizeTransaction = () => {
     return;
   }
 
+  // Lógica de inserção no array
   transactions.push({
-    id: transactions.length + 1,
+    id: transactions.length > 0 ? transactions[transactions.length - 1].id + 1 : 1,
     type: currentFormType,
     amount: tempAmount,
     status: currentFormType === "revenue" ? "recebido" : "pendente",
     description: selectedCategory,
   });
 
-  closeTransactionForm(); // Agora usamos a nova função para fechar
+  saveData();
+  closeTransactionForm();
   renderTransactions();
   calculateDailyTarget();
 };
@@ -265,15 +245,13 @@ btnAddExpense.addEventListener("click", () => openTransactionForm("expense"));
 btnNextToCategory.addEventListener("click", handleNextStep);
 btnFinalizeTransaction.addEventListener("click", handleFinalizeTransaction);
 
-// Escutador inteligente para fechar o modal ao clicar fora do card
 transactionFormContainer.addEventListener("click", (e) => {
-  // Garante que o clique foi no contêiner escuro, e não dentro do card interno
   if (e.target === transactionFormContainer) {
     closeTransactionForm();
   }
 });
 
-// Inicialização global do sistema ao carregar o script
+// Inicialização global
 const init = () => {
   renderTransactions();
   renderBills();

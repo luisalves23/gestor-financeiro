@@ -1,294 +1,335 @@
 :root {
-    --bg-body: #eef2fa;
-    --bg-surface: #ffffff;
-    --primary-blue: #556ee6;
-    --primary-hover: #4458b8;
-    --text-dark: #495057;
-    --text-muted: #74788d;
-    --border-color: #eff2f7;
-    --radius-lg: 12px;
-    --radius-md: 6px;
-    --shadow-sm: 0 0.75rem 1.5rem rgba(18,38,63,.03);
+  --bg-body: #eef2fa;
+  --bg-surface: #ffffff;
+  --primary-blue: #556ee6;
+  --primary-hover: #4458b8;
+  --text-dark: #495057;
+  --text-muted: #74788d;
+  --border-color: #eff2f7;
+  --radius-lg: 12px;
+  --radius-md: 6px;
+  --shadow-sm: 0 0.75rem 1.5rem rgba(18, 38, 63, 0.03);
 }
 
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: system-ui, -apple-system, sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
 body {
-    background-color: var(--bg-body);
-    color: var(--text-dark);
-    min-height: 100vh;
+  background-color: var(--bg-body);
+  color: var(--text-dark);
+  min-height: 100vh;
 }
 
 .app-wrapper {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 24px 16px 80px 16px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px 80px 16px;
 }
 
 header {
-    margin-bottom: 32px;
+  margin-bottom: 32px;
 }
 
 .page-title {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--text-dark);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-dark);
 }
 
 /* Base Mobile: Uma coluna */
 #app-content {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 24px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
 }
 
 .overview-card {
-    background-color: var(--primary-blue);
-    color: #ffffff;
-    border-radius: var(--radius-lg);
-    padding: 24px;
-    box-shadow: var(--shadow-sm);
+  background-color: var(--primary-blue);
+  color: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
 }
 
 .overview-card .label {
-    font-size: 14px;
-    font-weight: 500;
-    opacity: 0.9;
-    margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.9;
+  margin-bottom: 8px;
 }
 
 .overview-card .balance {
-    font-size: 36px;
-    font-weight: 700;
-    margin-bottom: 8px;
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 8px;
 }
 
 .overview-card .target {
-    font-size: 16px;
-    font-weight: 500;
-    opacity: 0.9;
-    margin-bottom: 20px;
+  font-size: 16px;
+  font-weight: 500;
+  opacity: 0.9;
+  margin-bottom: 20px;
 }
 
 .btn-group {
-    display: flex;
-    gap: 12px;
+  display: flex;
+  gap: 12px;
 }
 
-.btn-add, .btn-minus {
-    background-color: #ffffff;
-    color: var(--primary-blue);
-    border: none;
-    border-radius: var(--radius-md);
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s;
+.btn-add,
+.btn-minus {
+  background-color: #ffffff;
+  color: var(--primary-blue);
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .btn-add {
-    padding: 10px 24px;
-    font-size: 16px;
+  padding: 10px 24px;
+  font-size: 16px;
 }
 
 .btn-minus {
-    width: 40px;
-    height: 40px;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.btn-add:hover, .btn-minus:hover {
-    background-color: #f8f9fa;
+.btn-add:hover,
+.btn-minus:hover {
+  background-color: #f8f9fa;
 }
 
 .section-title {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 16px;
-    color: var(--text-dark);
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text-dark);
 }
 
 .data-table {
-    background-color: var(--bg-surface);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-sm);
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
 }
 
 .table-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1.5fr 0.2fr;
-    align-items: center;
-    padding: 16px 8px;
-    border-bottom: 1px solid var(--border-color);
-    font-size: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.5fr 0.2fr;
+  align-items: center;
+  padding: 16px 8px;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 14px;
 }
 
 .table-row:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 .table-row.header {
-    color: var(--text-muted);
-    font-weight: 600;
-    border-bottom: 2px solid var(--border-color);
+  color: var(--text-muted);
+  font-weight: 600;
+  border-bottom: 2px solid var(--border-color);
 }
 
 .badge {
-    padding: 4px 10px;
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: 600;
-    width: fit-content;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  width: fit-content;
 }
 
-.badge.pendente { background-color: #fff4de; color: #f1b44c; }
-.badge.recebido { background-color: #d4edda; color: #34c38f; }
-.badge.pago { background-color: #cce5ff; color: #556ee6; }
+.badge.pendente {
+  background-color: #fff4de;
+  color: #f1b44c;
+}
+.badge.recebido {
+  background-color: #d4edda;
+  color: #34c38f;
+}
+.badge.pago {
+  background-color: #cce5ff;
+  color: #556ee6;
+}
 
 /* Desktop/Tablet Breakpoint: Expande para Grid de duas colunas */
 @media (min-width: 800px) {
-    #app-content {
-        grid-template-columns: 350px 1fr;
-        align-items: start;
-    }
-    .app-wrapper {
-        padding-top: 40px;
-    }
+  #app-content {
+    grid-template-columns: 350px 1fr;
+    align-items: start;
+  }
+  .app-wrapper {
+    padding-top: 40px;
+  }
 }
 
 /* Container Principal do Formulário Dinâmico */
 .transaction-form-card {
-    background-color: var(--bg-surface);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-sm);
-    padding: 24px;
-    margin-bottom: 24px;
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 24px;
+  margin-bottom: 24px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
 }
 
 /* Estados Dinâmicos baseados na operação selecionada */
 .transaction-form-card.state-revenue {
-    border-color: #34c38f;
-    background-color: #f2faf6;
+  border-color: #34c38f;
+  background-color: #f2faf6;
 }
 
 .transaction-form-card.state-expense {
-    border-color: #f46a6a;
-    background-color: #fdf5f5;
+  border-color: #f46a6a;
+  background-color: #fdf5f5;
 }
 
 /* Títulos e Elementos Internos das Etapas */
 .form-step-title {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 16px;
-    color: var(--text-dark);
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text-dark);
 }
 
 .input-group {
-    display: flex;
-    align-items: center;
-    background-color: var(--bg-surface);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: 12px 16px;
-    margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  margin-bottom: 20px;
 }
 
 .currency-prefix {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--text-dark);
-    margin-right: 8px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-right: 8px;
 }
 
 .input-group input {
-    border: none;
-    outline: none;
-    font-size: 24px;
-    font-weight: 700;
-    width: 100%;
-    color: var(--text-dark);
+  border: none;
+  outline: none;
+  font-size: 24px;
+  font-weight: 700;
+  width: 100%;
+  color: var(--text-dark);
 }
 
 /* Botão de Avanço: Círculo Branco com Seta Colorida */
 .btn-next-step {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    border: none;
-    background-color: #ffffff;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    margin-left: auto;
-    transition: transform 0.2s;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-left: auto;
+  transition: transform 0.2s;
 }
 
 .btn-next-step:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 /* Modificadores de cor para a seta interna do botão */
 .state-revenue .btn-next-step .arrow-icon {
-    color: #34c38f;
-    font-size: 22px;
-    font-weight: 700;
+  color: #34c38f;
+  font-size: 22px;
+  font-weight: 700;
 }
 
 .state-expense .btn-next-step .arrow-icon {
-    color: #f46a6a;
-    font-size: 22px;
-    font-weight: 700;
+  color: #f46a6a;
+  font-size: 22px;
+  font-weight: 700;
 }
 
 /* Elementos da Etapa 2: Seleção de Categorias */
 .form-select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    background-color: var(--bg-surface);
-    font-size: 14px;
-    color: var(--text-dark);
-    margin-bottom: 16px;
-    outline: none;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-surface);
+  font-size: 14px;
+  color: var(--text-dark);
+  margin-bottom: 16px;
+  outline: none;
 }
 
 .custom-category-group input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    font-size: 14px;
-    margin-bottom: 16px;
-    outline: none;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  margin-bottom: 16px;
+  outline: none;
 }
 
 .btn-submit-form {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: var(--radius-md);
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    color: #ffffff;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #ffffff;
 }
 
-.state-revenue .btn-submit-form { background-color: #34c38f; }
-.state-expense .btn-submit-form { background-color: #f46a6a; }
+.state-revenue .btn-submit-form {
+  background-color: #34c38f;
+}
+.state-expense .btn-submit-form {
+  background-color: #f46a6a;
+}
+
+/* ===================================================
+   BOTÃO DE EXCLUSÃO DE LISTAS (PASSO 12.1)
+   =================================================== */
+.btn-delete {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    color 0.2s,
+    transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.btn-delete:hover {
+  color: #f46a6a;
+  transform: scale(1.2);
+}
