@@ -54,61 +54,78 @@ Aplicativo de planejamento financeiro pessoal desenvolvido para organizar receit
 - **Raciocínio:** Isolar a renderização desta tabela em um commit único garante que a lógica de formatação de moeda e a aplicação de classes CSS para o status sejam testadas e validadas antes de avançarmos para o próximo bloco de dados.
 
 ### 17/06/2026 | 10:17
-* **Etapa:** Desestruturação de estado (Parte 3 de 3) Injeção de Contas Registradas.
-* **O que foi feito:** Desenvolvi a função `renderBills` no JavaScript para processar o array de contas e atualizar a função de inicialização para desenhar ambas as tabelas simultaneamente ao carregar a página.
-* **Commit Realizado:** feat: implementa renderizacao dinamica da lista de contas
-* **Raciocínio:** Fechamos o ciclo de renderização dinâmica. Agora as duas tabelas dependem exclusivamente dos arrays de estado no JavaScript. Isso significa que qualquer cálculo futuro do motor financeiro terá os dados puros à disposição na memória, sem precisar raspar informações estruturais do HTML.
+
+- **Etapa:** Desestruturação de estado (Parte 3 de 3) Injeção de Contas Registradas.
+- **O que foi feito:** Desenvolvi a função `renderBills` no JavaScript para processar o array de contas e atualizar a função de inicialização para desenhar ambas as tabelas simultaneamente ao carregar a página.
+- **Commit Realizado:** feat: implementa renderizacao dinamica da lista de contas
+- **Raciocínio:** Fechamos o ciclo de renderização dinâmica. Agora as duas tabelas dependem exclusivamente dos arrays de estado no JavaScript. Isso significa que qualquer cálculo futuro do motor financeiro terá os dados puros à disposição na memória, sem precisar raspar informações estruturais do HTML.
 
 ### 17/06/2026 | 10:26
-* **Etapa:** Desenvolvimento do motor matemático de projeção diária.
-* **O que foi feito:** Desenvolvi a função `calculateDailyTarget` utilizando os métodos `filter` e `reduce` para processar o saldo líquido atual e projetar a meta de faturamento diário baseada nos passivos em aberto.
-* **Commit Realizado:** feat: implementa motor de calculo e projecao da meta diaria
-* **Raciocínio:** O núcleo inteligente da aplicação foi consolidado. O cálculo lê os dados vivos do estado, eliminando a necessidade de atualizar os saldos do topo manualmente. Utilizei a função de arredondamento para cima para garantir que a meta cubra os centavos dos passivos de forma segura.
+
+- **Etapa:** Desenvolvimento do motor matemático de projeção diária.
+- **O que foi feito:** Desenvolvi a função `calculateDailyTarget` utilizando os métodos `filter` e `reduce` para processar o saldo líquido atual e projetar a meta de faturamento diário baseada nos passivos em aberto.
+- **Commit Realizado:** feat: implementa motor de calculo e projecao da meta diaria
+- **Raciocínio:** O núcleo inteligente da aplicação foi consolidado. O cálculo lê os dados vivos do estado, eliminando a necessidade de atualizar os saldos do topo manualmente. Utilizei a função de arredondamento para cima para garantir que a meta cubra os centavos dos passivos de forma segura.
 
 ### 17/06/2026 | 10:29
-* **Etapa:** Captura de eventos de clique e mutação de estado dinâmico.
-* **O que foi feito:** Desenvolvi a função `handleAddRevenue` associada ao evento `click` do botão de inserção, permitindo injetar novas receitas no array de transações em tempo real.
-* **Commit Realizado:** feat: adiciona escutador de eventos para insercao de novas receitas
-* **Raciocínio:** Este passo valida a reatividade da aplicação. Ao isolar a lógica de captação de dados numa função que dispara os gatilhos de renderização e cálculo sequencialmente, garanto que o utilizador veja o seu saldo subir e a sua meta diária descer no exato segundo em que finaliza o lançamento.
+
+- **Etapa:** Captura de eventos de clique e mutação de estado dinâmico.
+- **O que foi feito:** Desenvolvi a função `handleAddRevenue` associada ao evento `click` do botão de inserção, permitindo injetar novas receitas no array de transações em tempo real.
+- **Commit Realizado:** feat: adiciona escutador de eventos para insercao de novas receitas
+- **Raciocínio:** Este passo valida a reatividade da aplicação. Ao isolar a lógica de captação de dados numa função que dispara os gatilhos de renderização e cálculo sequencialmente, garanto que o utilizador veja o seu saldo subir e a sua meta diária descer no exato segundo em que finaliza o lançamento.
 
 ### 17/06/2026 | 10:37
-* **Etapa:** Reestruturação do fluxo de entrada (Parte 1 de 4) - Estrutura do Card Semântico.
-* **O que foi feito:** Eliminei o uso de prompts nativos e criei a estrutura HTML do `transaction-form-card`, dividida em duas etapas de captura (valor e categoria) com campos específicos de entrada.
-* **Commit Realizado:** feat: estrutura esqueleto do formulario dinâmico em etapas no html
-* **Raciocínio:** Substituir caixas de diálogo nativas por componentes inline é essencial para a maturidade do produto. Dividi o formulário em blocos lógicos (`form-step`) para permitir que a interface guie o usuário de forma minimalista, preparando o documento para receber a estilização condicional nas próximas etapas.
+
+- **Etapa:** Reestruturação do fluxo de entrada (Parte 1 de 4) - Estrutura do Card Semântico.
+- **O que foi feito:** Eliminei o uso de prompts nativos e criei a estrutura HTML do `transaction-form-card`, dividida em duas etapas de captura (valor e categoria) com campos específicos de entrada.
+- **Commit Realizado:** feat: estrutura esqueleto do formulario dinâmico em etapas no html
+- **Raciocínio:** Substituir caixas de diálogo nativas por componentes inline é essencial para a maturidade do produto. Dividi o formulário em blocos lógicos (`form-step`) para permitir que a interface guie o usuário de forma minimalista, preparando o documento para receber a estilização condicional nas próximas etapas.
 
 ### 17/06/2026 | 10:50
-* **Etapa:** Reestruturação do fluxo de entrada (Parte 2 de 4) - Estilização Condicional.
-* **O que foi feito:** Desenvolvi as classes de estilo para o card de formulário, implementando modificadores visuais (`state-revenue` e `state-expense`) e a estilização do botão circular de avanço.
-* **Commit Realizado:** style: implementa classes de estado visual e transições para o formulario
-* **Raciocínio:** Isolei a camada de estilo para garantir que o componente se transforme de forma elegante. Ao utilizar herança de classes do CSS (como `.state-revenue .btn-next-step`), permito que a cor da seta e do botão de submissão mude de forma automática na tela apenas alterando a classe pai via JavaScript, mantendo a folha de estilos limpa e modular.
+
+- **Etapa:** Reestruturação do fluxo de entrada (Parte 2 de 4) - Estilização Condicional.
+- **O que foi feito:** Desenvolvi as classes de estilo para o card de formulário, implementando modificadores visuais (`state-revenue` e `state-expense`) e a estilização do botão circular de avanço.
+- **Commit Realizado:** style: implementa classes de estado visual e transições para o formulario
+- **Raciocínio:** Isolei a camada de estilo para garantir que o componente se transforme de forma elegante. Ao utilizar herança de classes do CSS (como `.state-revenue .btn-next-step`), permito que a cor da seta e do botão de submissão mude de forma automática na tela apenas alterando a classe pai via JavaScript, mantendo a folha de estilos limpa e modular.
 
 ### 17/06/2026 | 10:56
-* **Etapa:** Reestruturação do fluxo de entrada (Parte 3 de 4) - Catálogo de Categorias.
-* **O que foi feito:** Defini o objeto `categoriesData` com 10 categorias mapeadas para cada tipo de transação e criei a função `populateCategories` junto ao evento de escuta do select.
-* **Commit Realizado:** feat: implementa catalogo de categorias e logica de expansao inline
-* **Raciocínio:** Isolar os dados das categorias num objeto estruturado permite alternar as opções exibidas de forma dinâmica sem duplicar elementos no HTML. O ouvinte de alteração (`change`) monitoriza a escolha do utilizador e exibe o campo oculto para categorias não catalogadas de forma condicional, mantendo a interface limpa.
+
+- **Etapa:** Reestruturação do fluxo de entrada (Parte 3 de 4) - Catálogo de Categorias.
+- **O que foi feito:** Defini o objeto `categoriesData` com 10 categorias mapeadas para cada tipo de transação e criei a função `populateCategories` junto ao evento de escuta do select.
+- **Commit Realizado:** feat: implementa catalogo de categorias e logica de expansao inline
+- **Raciocínio:** Isolar os dados das categorias num objeto estruturado permite alternar as opções exibidas de forma dinâmica sem duplicar elementos no HTML. O ouvinte de alteração (`change`) monitoriza a escolha do utilizador e exibe o campo oculto para categorias não catalogadas de forma condicional, mantendo a interface limpa.
 
 ### 17/06/2026 | 11:03
-* **Etapa:** Reestruturação do fluxo de entrada (Parte 4 de 4) - Controle de Fluxo e Consolidação.
-* **O que foi feito:** Desenvolvi as funções `openTransactionForm`, `handleNextStep` e `handleFinalizeTransaction`, acoplando os escutadores de eventos para gerir a máquina de estados do formulário inline.
-* **Commit Realizado:** feat: consolida controle de etapas e salvamento do formulario dinamico
-* **Raciocínio:** Concluí a substituição dos prompts nativos. O formulário agora opera em duas etapas isoladas dentro da própria interface: valida o valor na primeira tela, carrega as categorias corretas na segunda e injeta o objeto final no array de movimentações. Isso garante uma experiência totalmente integrada e fluida para o uso diário no computador ou tablet.
+
+- **Etapa:** Reestruturação do fluxo de entrada (Parte 4 de 4) - Controle de Fluxo e Consolidação.
+- **O que foi feito:** Desenvolvi as funções `openTransactionForm`, `handleNextStep` e `handleFinalizeTransaction`, acoplando os escutadores de eventos para gerir a máquina de estados do formulário inline.
+- **Commit Realizado:** feat: consolida controle de etapas e salvamento do formulario dinamico
+- **Raciocínio:** Concluí a substituição dos prompts nativos. O formulário agora opera em duas etapas isoladas dentro da própria interface: valida o valor na primeira tela, carrega as categorias corretas na segunda e injeta o objeto final no array de movimentações. Isso garante uma experiência totalmente integrada e fluida para o uso diário no computador ou tablet.
 
 ### 17/06/2026 | 11:20
-* **Etapa:** Ajuste lógico de exibição e encerramento para arquitetura Overlay Modal.
-* **O que foi feito:** Atualizei a função `openTransactionForm` para utilizar display flexível, criei a função de descarte `closeTransactionForm` e adicionei um escutador de eventos no fundo desfocado para encerramento automático.
-* **Commit Realizado:** feat: adapta fluxo javascript para fechar modal e renderizar flexbox
-* **Raciocínio:** Integrar o CSS flutuante exigiu repensar o controle da interface no JS. Utilizar `display: flex` assegura que o card flutue no centro geométrico de qualquer tela. O novo evento de escuta verifica a origem do clique (`e.target === transactionFormContainer`); se o usuário clicar no fundo escuro, a aplicação entende que ele desistiu do preenchimento, esvazia as variáveis de fluxo e oculta a tela de forma segura sem lançar dados corrompidos.
+
+- **Etapa:** Ajuste lógico de exibição e encerramento para arquitetura Overlay Modal.
+- **O que foi feito:** Atualizei a função `openTransactionForm` para utilizar display flexível, criei a função de descarte `closeTransactionForm` e adicionei um escutador de eventos no fundo desfocado para encerramento automático.
+- **Commit Realizado:** feat: adapta fluxo javascript para fechar modal e renderizar flexbox
+- **Raciocínio:** Integrar o CSS flutuante exigiu repensar o controle da interface no JS. Utilizar `display: flex` assegura que o card flutue no centro geométrico de qualquer tela. O novo evento de escuta verifica a origem do clique (`e.target === transactionFormContainer`); se o usuário clicar no fundo escuro, a aplicação entende que ele desistiu do preenchimento, esvazia as variáveis de fluxo e oculta a tela de forma segura sem lançar dados corrompidos.
 
 ### 17/06/2026 | 11:30
-* **Etapa:** Implementação de Persistência de Dados (Local Storage).
-* **O que foi feito:** Substituí as variáveis estáticas do estado por chamadas ao `localStorage`, criei os arrays de fallback `defaultTransactions` e `defaultBills`, e introduzi a função `saveData()` para registrar mutações no disco do navegador.
-* **Commit Realizado:** feat: implementa persistencia de dados no local storage
-* **Raciocínio:** Para que o MVP seja utilizável na rua, os dados não podem viver apenas na memória volátil (RAM). Ao transformar os objetos JavaScript em strings JSON e gravá-los no armazenamento local do browser, garantimos que o usuário possa fechar a aba, desligar a tela e, ao retornar, todo o seu caixa e passivos estejam perfeitamente preservados.
+
+- **Etapa:** Implementação de Persistência de Dados (Local Storage).
+- **O que foi feito:** Substituí as variáveis estáticas do estado por chamadas ao `localStorage`, criei os arrays de fallback `defaultTransactions` e `defaultBills`, e introduzi a função `saveData()` para registrar mutações no disco do navegador.
+- **Commit Realizado:** feat: implementa persistencia de dados no local storage
+- **Raciocínio:** Para que o MVP seja utilizável na rua, os dados não podem viver apenas na memória volátil (RAM). Ao transformar os objetos JavaScript em strings JSON e gravá-los no armazenamento local do browser, garantimos que o usuário possa fechar a aba, desligar a tela e, ao retornar, todo o seu caixa e passivos estejam perfeitamente preservados.
 
 ### 17/06/2026 | 11:45
-* **Etapa:** Funcionalidade de Exclusão (Parte 1 de 2) - Interface de Ação.
-* **O que foi feito:** Substituí a seta estática decorativa nas tabelas por botões semânticos de exclusão ('✖'). Utilizei o atributo `data-id` nos botões do JS e implementei o feedback visual no CSS.
-* **Commit Realizado:** style: adiciona botoes interativos de exclusao nas listas de dados
-* **Raciocínio:** O atributo `data-id` que coloquei em cada botão de exclusão injetado pelo JavaScript será vital no próximo passo. Ele embute a "identidade" daquela transação diretamente no código HTML, permitindo que a função de apagar saiba exatamente qual objeto do array deve ser aniquilado.
+
+- **Etapa:** Funcionalidade de Exclusão (Parte 1 de 2) - Interface de Ação.
+- **O que foi feito:** Substituí a seta estática decorativa nas tabelas por botões semânticos de exclusão ('✖'). Utilizei o atributo `data-id` nos botões do JS e implementei o feedback visual no CSS.
+- **Commit Realizado:** style: adiciona botoes interativos de exclusao nas listas de dados
+- **Raciocínio:** O atributo `data-id` que coloquei em cada botão de exclusão injetado pelo JavaScript será vital no próximo passo. Ele embute a "identidade" daquela transação diretamente no código HTML, permitindo que a função de apagar saiba exatamente qual objeto do array deve ser aniquilado.
+
+### 17/06/2026 | 11:55
+
+- **Etapa:** Funcionalidade de Exclusão (Parte 2 de 2) - Lógica de Deleção e Delegação de Eventos.
+- **O que foi feito:** Criei a função `handleDelete` no JavaScript utilizando o método `filter` para varrer os arrays e remover objetos com base no `data-id`. Implementei o padrão de Delegação de Eventos (`Event Delegation`) nas listas de transações e contas.
+- **Commit Realizado:** feat: implementa logica de exclusao e sincroniza mutacao com local storage
+- **Raciocínio:** Como os botões são gerados e destruídos a todo momento pela renderização, aplicar um ouvinte de clique diretamente em cada botão geraria vazamento de memória. Ao invés disso, coloquei um único ouvinte na div pai da tabela. Quando ocorre um clique, o sistema verifica se o alvo possui a classe `.btn-delete`, realiza a exclusão através de filtro inverso, salva o novo estado no `localStorage` e redesenha a tela instantaneamente.

@@ -153,7 +153,7 @@ const renderBills = () => {
 };
 
 // ==========================================
-// 5. MÁQUINA DE ESTADOS DO FORMULÁRIO DINÂMICO
+// 5. MÁQUINA DE ESTADOS DO FORMULÁRIO DINÂMICO E LÓGICA DE DADOS
 // ==========================================
 
 const populateCategories = (type) => {
@@ -229,6 +229,27 @@ const handleFinalizeTransaction = () => {
   calculateDailyTarget();
 };
 
+// NOVO: Função para deletar um item (Movimentação ou Conta)
+const handleDelete = (e, listType) => {
+  const deleteBtn = e.target.closest('.btn-delete');
+  if (!deleteBtn) return; // Se o clique não foi num botão de deletar, ignora
+
+  const id = parseInt(deleteBtn.getAttribute('data-id'));
+
+  if (confirm("Tem certeza que deseja excluir este registro?")) {
+    if (listType === 'transaction') {
+      transactions = transactions.filter(t => t.id !== id);
+    } else if (listType === 'bill') {
+      bills = bills.filter(b => b.id !== id);
+    }
+
+    saveData();
+    renderTransactions();
+    renderBills();
+    calculateDailyTarget();
+  }
+};
+
 // ==========================================
 // 6. ADICIONA OS ESCUTADORES DE EVENTOS (LISTENERS)
 // ==========================================
@@ -250,6 +271,10 @@ transactionFormContainer.addEventListener("click", (e) => {
     closeTransactionForm();
   }
 });
+
+// NOVO: Escutadores de evento para exclusão nas listas
+transactionsList.addEventListener("click", (e) => handleDelete(e, 'transaction'));
+billsList.addEventListener("click", (e) => handleDelete(e, 'bill'));
 
 // Inicialização global
 const init = () => {
