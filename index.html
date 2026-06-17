@@ -13,13 +13,61 @@
         </header>
         
         <main id="app-content">
-            <section class="overview-card">
-                <div class="label">Saldo atual hoje</div>
-                <div class="balance" id="current-balance">R$ 126,74</div>
-                <div class="target" id="daily-target">Meta: R$ 240,00</div>
-                <div class="btn-group">
-                    <button class="btn-add" id="btn-add-revenue">Adicionar</button>
-                    <button class="btn-minus" id="btn-add-expense">-</button>
+            <aside class="sidebar-section">
+                <section class="overview-card">
+                    <div class="label">Saldo atual hoje</div>
+                    <div class="balance" id="current-balance">$ 126.74</div>
+                    <div class="target" id="daily-target">Meta: $ 240.00</div>
+                    <div class="btn-group">
+                        <button class="btn-add" id="btn-add-revenue">Adicionar</button>
+                        <button class="btn-minus" id="btn-add-expense">-</button>
+                    </div>
+                </section>
+            </aside>
+
+            <section class="data-section">
+                <h2 class="section-title">Movimentações Recentes</h2>
+                <div class="data-table" id="transactions-list">
+                    <div class="table-row header">
+                        <div>Valor</div>
+                        <div>Status</div>
+                        <div>Descrição</div>
+                        <div></div>
+                    </div>
+                    <div class="table-row">
+                        <div>- R$ 20,00</div>
+                        <div><span class="badge pendente">Pendente</span></div>
+                        <div>Combustível</div>
+                        <div class="arrow">▼</div>
+                    </div>
+                    <div class="table-row">
+                        <div>+ R$ 120,00</div>
+                        <div><span class="badge recebido">Recebido</span></div>
+                        <div>Diária Uber</div>
+                        <div class="arrow">▼</div>
+                    </div>
+                </div>
+
+                <h2 class="section-title" style="margin-top: 32px;">Contas Registradas</h2>
+                <div class="data-table" id="bills-list">
+                    <div class="table-row header">
+                        <div>Valor</div>
+                        <div>Status</div>
+                        <div>Descrição</div>
+                        <div></div>
+                    </div>
+                    <div class="table-row">
+                        <div>R$ 1080,00</div>
+                        <div><span class="badge pendente">Pendente</span></div>
+                        <div>Aluguel</div>
+                        <div class="arrow">▼</div>
+                    </div>
+                    <div class="table-row">
+                        <div>R$ 800,00</div>
+                        <div><span class="badge pago">Pago</span></div>
+                        <div>Alimentação</div>
+                        <div class="arrow">▼</div>
+                    </div>
                 </div>
             </section>
         </main>

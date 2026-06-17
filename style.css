@@ -1,10 +1,14 @@
 :root {
-    --bg-color: #f5f5f5;
-    --app-bg: #ffffff;
-    --text-color: #000000;
-    --border-color: #000000;
-    --accent-color: #000000;
-    --border-radius: 12px;
+    --bg-body: #eef2fa;
+    --bg-surface: #ffffff;
+    --primary-blue: #556ee6;
+    --primary-hover: #4458b8;
+    --text-dark: #495057;
+    --text-muted: #74788d;
+    --border-color: #eff2f7;
+    --radius-lg: 12px;
+    --radius-md: 6px;
+    --shadow-sm: 0 0.75rem 1.5rem rgba(18,38,63,.03);
 }
 
 * {
@@ -15,81 +19,150 @@
 }
 
 body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    display: flex;
-    justify-content: center;
+    background-color: var(--bg-body);
+    color: var(--text-dark);
     min-height: 100vh;
 }
 
 .app-wrapper {
-    background-color: var(--app-bg);
     width: 100%;
-    max-width: 412px;
-    min-height: 100vh;
-    padding: 24px 16px;
-    border-left: 1.5px solid var(--border-color);
-    border-right: 1.5px solid var(--border-color);
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 16px 80px 16px;
+}
+
+header {
+    margin-bottom: 32px;
 }
 
 .page-title {
-    text-align: center;
-    font-size: 32px;
+    font-size: 24px;
     font-weight: 700;
-    margin-bottom: 24px;
+    color: var(--text-dark);
+}
+
+/* Base Mobile: Uma coluna */
+#app-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
 }
 
 .overview-card {
-    border: 1.5px solid var(--border-color);
-    border-radius: var(--border-radius);
-    padding: 20px;
-    margin-bottom: 28px;
+    background-color: var(--primary-blue);
+    color: #ffffff;
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
 }
 
 .overview-card .label {
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 500;
+    opacity: 0.9;
     margin-bottom: 8px;
 }
 
 .overview-card .balance {
-    font-size: 40px;
+    font-size: 36px;
     font-weight: 700;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
 }
 
 .overview-card .target {
-    font-size: 22px;
-    font-weight: 600;
-    margin-bottom: 16px;
+    font-size: 16px;
+    font-weight: 500;
+    opacity: 0.9;
+    margin-bottom: 20px;
 }
 
 .btn-group {
     display: flex;
-    align-items: center;
     gap: 12px;
 }
 
-.btn-add {
-    background-color: transparent;
-    border: 1.5px solid var(--border-color);
-    border-radius: 8px;
-    padding: 8px 24px;
-    font-size: 18px;
+.btn-add, .btn-minus {
+    background-color: #ffffff;
+    color: var(--primary-blue);
+    border: none;
+    border-radius: var(--radius-md);
     font-weight: 600;
     cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-add {
+    padding: 10px 24px;
+    font-size: 16px;
 }
 
 .btn-minus {
-    background-color: transparent;
-    border: 1.5px solid var(--border-color);
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    font-size: 22px;
-    font-weight: 600;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
+}
+
+.btn-add:hover, .btn-minus:hover {
+    background-color: #f8f9fa;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--text-dark);
+}
+
+.data-table {
+    background-color: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.table-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.5fr 0.2fr;
+    align-items: center;
+    padding: 16px 8px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 14px;
+}
+
+.table-row:last-child {
+    border-bottom: none;
+}
+
+.table-row.header {
+    color: var(--text-muted);
+    font-weight: 600;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.badge {
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    width: fit-content;
+}
+
+.badge.pendente { background-color: #fff4de; color: #f1b44c; }
+.badge.recebido { background-color: #d4edda; color: #34c38f; }
+.badge.pago { background-color: #cce5ff; color: #556ee6; }
+
+/* Desktop/Tablet Breakpoint: Expande para Grid de duas colunas */
+@media (min-width: 800px) {
+    #app-content {
+        grid-template-columns: 350px 1fr;
+        align-items: start;
+    }
+    .app-wrapper {
+        padding-top: 40px;
+    }
 }
