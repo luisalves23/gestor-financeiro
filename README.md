@@ -163,3 +163,9 @@ Aplicativo de planejamento financeiro pessoal desenvolvido para organizar receit
 * **O que foi feito:** Ajustei a função `calculateDailyTarget` para isolar o cálculo da meta base ideal e implementar uma cadeia de condicionais (`if/else if`) que mapeia percentualmente o atingimento da meta, além de adicionar uma regra direta para forçar a cor vermelha em saldos matematicamente negativos.
 * **Commit Realizado:** feat: implementa inteligencia matematica no motor de semaforo de performance
 * **Raciocínio:** Para o painel refletir a evolução diária corretamente, precisei de criar uma variável `baseTarget` que desconsidera o saldo em caixa (diferente da meta que é exibida em tela e é móvel). Com essa régua fixa, a aplicação sabe exatamente quanto seria o esforço do dia a partir do zero e, com as condicionais, engatilha as classes `status-danger`, `warning`, `success` ou `premium` dinamicamente conforme os lançamentos são inseridos ou excluídos.
+
+### 17/06/2026 | 11:50
+* **Etapa:** Configuração do Novo Grid de Dashboard Responsivo (Parte 1 de 5).
+* **O que foi feito:** Reestruturei o esqueleto semântico do HTML criando a área de `.top-cards-grid` para abrigar os cartões gêmeos de Saldo e Contas Fixas. Reformulei o CSS Grid das listagens para operarem lado a lado no desktop.
+* **Commit Realizado:** layout: implementa malha de dashboard simetrico com duas colunas de visualizacao
+* **Raciocínio:** O layout anterior sacrificava a área útil de telas maiores prendendo as tabelas em uma única coluna vertical. Ao isolar os resumos no topo com largura flexível e quebrar as listas em tags `.data-column` independentes, criei um visual limpo e profissional. No mobile, as regras de herança do CSS Grid empilham os blocos de forma automática, preservando a usabilidade em qualquer dispositivo.
