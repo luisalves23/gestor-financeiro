@@ -21,3 +21,9 @@ Aplicativo de planejamento financeiro pessoal desenvolvido para organizar receit
 * **O que foi feito:** Inicializei o GitHub Codespaces, utilizei o terminal para criar a estrutura modular (HTML, CSS e JS) e preparei a base semântica da aplicação.
 * **Commit Realizado:** build: configura codespaces e estrutura modular de arquivos
 * **Raciocínio:** O uso do terminal eleva o controle sobre o projeto. Separei as responsabilidades do código logo no início para evitar dívida técnica. O HTML agora serve apenas de esqueleto, conectando-se a um arquivo de estilo e a um de lógica isolados, seguindo as melhores práticas do mercado.
+
+### 16/06/2026 | 22:35
+* **Etapa:** Construção dos tokens de design globais e do card de saldo principal.
+* **O que foi feito:** Estabeleci as variáveis de CSS para padronizar cores e bordas, e construí a estrutura semântica do cartão de Visão Geral no HTML com identificadores para futura injeção de dados.
+* **Commit Realizado:** feat: cria variaveis globais de css e estrutura o componente de saldo
+* **Raciocínio:** Começar o estilo por variáveis globais garante que a identidade visual se mantenha consistente ao longo do desenvolvimento. Os identificadores (IDs) colocados no HTML já preparam o arquivo para receber os cálculos dinâmicos da lógica que controlará a flutuação do meu ganho diário.

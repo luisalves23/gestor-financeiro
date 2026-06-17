@@ -1,0 +1,95 @@
+:root {
+    --bg-color: #f5f5f5;
+    --app-bg: #ffffff;
+    --text-color: #000000;
+    --border-color: #000000;
+    --accent-color: #000000;
+    --border-radius: 12px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.app-wrapper {
+    background-color: var(--app-bg);
+    width: 100%;
+    max-width: 412px;
+    min-height: 100vh;
+    padding: 24px 16px;
+    border-left: 1.5px solid var(--border-color);
+    border-right: 1.5px solid var(--border-color);
+}
+
+.page-title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 24px;
+}
+
+.overview-card {
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 28px;
+}
+
+.overview-card .label {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.overview-card .balance {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.overview-card .target {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.btn-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-add {
+    background-color: transparent;
+    border: 1.5px solid var(--border-color);
+    border-radius: 8px;
+    padding: 8px 24px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-minus {
+    background-color: transparent;
+    border: 1.5px solid var(--border-color);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    font-size: 22px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
