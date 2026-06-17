@@ -38,3 +38,9 @@ Aplicativo de planejamento financeiro pessoal desenvolvido para organizar receit
 - **O que foi feito:** Pausei a rota anterior para substituir a paleta de cores por tons baseados no dashboard de referência (azul vibrante e cinza suave). Introduzi a regra de `@media query` para transformar o layout fluido.
 - **Commit Realizado:** style: aplica novo design system e adapta layout para desktop e tablet
 - **Raciocínio:** Percebi que a aplicação estava travada com larguras fixas de celular, o que prejudicaria a usabilidade no meu tablet e PC. Refatorei o CSS implementando o conceito de Mobile First com CSS Grid. Ao ultrapassar 800px de largura de tela, o sistema reorganiza a visão geral e as tabelas lado a lado de forma automática.
+
+### 16/06/2026 | 23:05
+* **Etapa:** Desestruturação de estado (Parte 1 de 3) - Limpeza e Fundação.
+* **O que foi feito:** Removi os dados fixos das tabelas no arquivo HTML, deixando os contêineres vazios e prontos para injeção. No JavaScript, criei as variáveis de estado (`transactions` e `bills`) e referenciei os elementos do DOM.
+* **Commit Realizado:** refactor: limpa dados estaticos do html e estabelece estado inicial no js
+* **Raciocínio:** Optei por dividir a implementação dinâmica da tela em commits atômicos de no máximo 30 linhas. Este primeiro passo cria a ponte entre a interface e os dados puros (estado), sem misturar a lógica de montagem visual, o que facilita manutenções futuras e revisões de código.
