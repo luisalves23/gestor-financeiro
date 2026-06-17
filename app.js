@@ -37,6 +37,7 @@ let tempAmount = 0;
 // ==========================================
 // 2. MAPEAMENTO DE ELEMENTOS DO DOM
 // ==========================================
+const overviewCard = document.querySelector(".overview-card"); // NOVO: Mapeamento do Card de Saldo
 const transactionsList = document.getElementById("transactions-list");
 const billsList = document.getElementById("bills-list");
 
@@ -69,7 +70,7 @@ const formatCurrency = (value) => {
   return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 };
 
-// Processa o saldo vivo e projeta a meta
+// Processa o saldo vivo, projeta a meta e ativa o Semáforo Visual
 const calculateDailyTarget = () => {
   const totalPendingBills = bills
     .filter((bill) => bill.status === "pendente")
@@ -81,17 +82,46 @@ const calculateDailyTarget = () => {
       : sum - transaction.amount;
   }, 0);
 
-  const daysRemaining = 15;
+  const daysRemaining = 15; // Fixo para o MVP
 
-  const targetValue =
-    daysRemaining > 0
+  // 1. Meta Base Ideal (Régua fixa para servir de comparação progressiva)
+  const baseTarget = daysRemaining > 0 ? totalPendingBills / daysRemaining : 0;
+
+  // 2. Meta Dinâmica (O que realmente falta de esforço financeiro abatendo o que já tem em caixa)
+  const targetValue = daysRemaining > 0
       ? Math.ceil((totalPendingBills - currentBalance) / daysRemaining)
       : 0;
 
-  document.getElementById("current-balance").innerText =
-    formatCurrency(currentBalance);
-  document.getElementById("daily-target").innerText =
-    `Meta: ${formatCurrency(targetValue)} por dia`;
+  // Atualização dos Textos de Interface
+  document.getElementById("current-balance").innerText = formatCurrency(currentBalance);
+  // Se a meta for negativa (já cobriu tudo com sobra), trava a exibição em zero
+  const displayTarget = targetValue > 0 ? targetValue : 0;
+  document.getElementById("daily-target").innerText = `Meta: ${formatCurrency(displayTarget)} por dia`;
+
+  // 3. Motor de Semáforo Cromático do Painel
+  overviewCard.classList.remove('status-danger', 'status-warning', 'status-success', 'status-premium');
+
+  if (baseTarget === 0) {
+      // Cenário onde não há passivos pendentes
+      if (currentBalance < 0) overviewCard.classList.add('status-danger');
+      else if (currentBalance > 0) overviewCard.classList.add('status-premium');
+      else overviewCard.classList.add('status-success');
+  } else {
+      // Cenário com metas ativas
+      if (currentBalance < 0 || currentBalance < (baseTarget * 0.5)) {
+          // Saldo negativo OU faturamento abaixo da metade da meta base = Perigo
+          overviewCard.classList.add('status-danger');
+      } else if (currentBalance >= (baseTarget * 0.5) && currentBalance < baseTarget) {
+          // Atingiu metade, mas não fechou a meta completa = Aviso
+          overviewCard.classList.add('status-warning');
+      } else if (currentBalance >= baseTarget && currentBalance < (baseTarget * 1.15)) {
+          // Bateu a meta no limite (até 15% de margem extra) = Sucesso
+          overviewCard.classList.add('status-success');
+      } else if (currentBalance >= (baseTarget * 1.15)) {
+          // Superou com folga (mais de 15% acima da meta diária) = Premium
+          overviewCard.classList.add('status-premium');
+      }
+  }
 };
 
 // ==========================================
@@ -214,7 +244,6 @@ const handleFinalizeTransaction = () => {
     return;
   }
 
-  // Lógica de inserção no array
   transactions.push({
     id: transactions.length > 0 ? transactions[transactions.length - 1].id + 1 : 1,
     type: currentFormType,
@@ -229,10 +258,9 @@ const handleFinalizeTransaction = () => {
   calculateDailyTarget();
 };
 
-// NOVO: Função para deletar um item (Movimentação ou Conta)
 const handleDelete = (e, listType) => {
   const deleteBtn = e.target.closest('.btn-delete');
-  if (!deleteBtn) return; // Se o clique não foi num botão de deletar, ignora
+  if (!deleteBtn) return; 
 
   const id = parseInt(deleteBtn.getAttribute('data-id'));
 
@@ -272,7 +300,6 @@ transactionFormContainer.addEventListener("click", (e) => {
   }
 });
 
-// NOVO: Escutadores de evento para exclusão nas listas
 transactionsList.addEventListener("click", (e) => handleDelete(e, 'transaction'));
 billsList.addEventListener("click", (e) => handleDelete(e, 'bill'));
 

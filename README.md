@@ -157,3 +157,9 @@ Aplicativo de planejamento financeiro pessoal desenvolvido para organizar receit
 - **O que foi feito:** Desenvolvi as classes modificadoras do `.overview-card` no CSS para suportar quatro estados financeiros visuais (perigo, aviso, sucesso e premium) e acoplei seletores descendentes para os botões internos.
 - **Commit Realizado:** style: implementa classes modificadoras de cor solida para o card de saldo geral
 - **Raciocínio:** Isolar os estilos de cor no CSS garante a separação estrita de responsabilidades. Para manter a legibilidade e a harmonia estética do design system, injetei regras descendentes que alteram automaticamente a cor das fontes dos botões "Adicionar" e "-" de acordo com o fundo atual do card, evitando contrastes opacos e mantendo o visual limpo.
+
+### 17/06/2026 | 11:36
+* **Etapa:** Configuração de Modificadores Cromáticos para Mapeamento de Metas (Parte 2 de 2).
+* **O que foi feito:** Ajustei a função `calculateDailyTarget` para isolar o cálculo da meta base ideal e implementar uma cadeia de condicionais (`if/else if`) que mapeia percentualmente o atingimento da meta, além de adicionar uma regra direta para forçar a cor vermelha em saldos matematicamente negativos.
+* **Commit Realizado:** feat: implementa inteligencia matematica no motor de semaforo de performance
+* **Raciocínio:** Para o painel refletir a evolução diária corretamente, precisei de criar uma variável `baseTarget` que desconsidera o saldo em caixa (diferente da meta que é exibida em tela e é móvel). Com essa régua fixa, a aplicação sabe exatamente quanto seria o esforço do dia a partir do zero e, com as condicionais, engatilha as classes `status-danger`, `warning`, `success` ou `premium` dinamicamente conforme os lançamentos são inseridos ou excluídos.
