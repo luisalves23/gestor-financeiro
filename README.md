@@ -150,3 +150,10 @@ Aplicativo de planejamento financeiro pessoal desenvolvido para organizar receit
 - **O que foi feito:** Defini cores pastéis específicas para as propriedades `::placeholder` segregadas por estado (`#bbf3db` e `#fcc9c5`) e forcei a neutralização da opacidade nativa do navegador.
 - **Commit Realizado:** style: calibra tom dos placeholders para branco esverdeado e avermelhado opaco
 - **Raciocínio:** Identifiquei que os navegadores aplicavam um filtro cinza semitransparente sobre placeholders numéricos. Ao isolar os seletores por tipo de operação e cravar a propriedade `opacity: 1 !important`, rompi o padrão cinzento do browser, garantindo que o valor de espera adote um tom menta pastel totalmente integrado à identidade visual cromática do card.
+
+### 17/06/2026 | 11:33
+
+- **Etapa:** Configuração de Modificadores Cromáticos para Mapeamento de Metas (Parte 1 de 2).
+- **O que foi feito:** Desenvolvi as classes modificadoras do `.overview-card` no CSS para suportar quatro estados financeiros visuais (perigo, aviso, sucesso e premium) e acoplei seletores descendentes para os botões internos.
+- **Commit Realizado:** style: implementa classes modificadoras de cor solida para o card de saldo geral
+- **Raciocínio:** Isolar os estilos de cor no CSS garante a separação estrita de responsabilidades. Para manter a legibilidade e a harmonia estética do design system, injetei regras descendentes que alteram automaticamente a cor das fontes dos botões "Adicionar" e "-" de acordo com o fundo atual do card, evitando contrastes opacos e mantendo o visual limpo.
