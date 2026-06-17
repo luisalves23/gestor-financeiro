@@ -76,3 +76,9 @@ Aplicativo de planejamento financeiro pessoal desenvolvido para organizar receit
 * **O que foi feito:** Eliminei o uso de prompts nativos e criei a estrutura HTML do `transaction-form-card`, dividida em duas etapas de captura (valor e categoria) com campos específicos de entrada.
 * **Commit Realizado:** feat: estrutura esqueleto do formulario dinâmico em etapas no html
 * **Raciocínio:** Substituir caixas de diálogo nativas por componentes inline é essencial para a maturidade do produto. Dividi o formulário em blocos lógicos (`form-step`) para permitir que a interface guie o usuário de forma minimalista, preparando o documento para receber a estilização condicional nas próximas etapas.
+
+### 17/06/2026 | 10:50
+* **Etapa:** Reestruturação do fluxo de entrada (Parte 2 de 4) - Estilização Condicional.
+* **O que foi feito:** Desenvolvi as classes de estilo para o card de formulário, implementando modificadores visuais (`state-revenue` e `state-expense`) e a estilização do botão circular de avanço.
+* **Commit Realizado:** style: implementa classes de estado visual e transições para o formulario
+* **Raciocínio:** Isolei a camada de estilo para garantir que o componente se transforme de forma elegante. Ao utilizar herança de classes do CSS (como `.state-revenue .btn-next-step`), permito que a cor da seta e do botão de submissão mude de forma automática na tela apenas alterando a classe pai via JavaScript, mantendo a folha de estilos limpa e modular.

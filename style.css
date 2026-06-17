@@ -166,3 +166,129 @@ header {
         padding-top: 40px;
     }
 }
+
+/* Container Principal do Formulário Dinâmico */
+.transaction-form-card {
+    background-color: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 24px;
+    margin-bottom: 24px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+/* Estados Dinâmicos baseados na operação selecionada */
+.transaction-form-card.state-revenue {
+    border-color: #34c38f;
+    background-color: #f2faf6;
+}
+
+.transaction-form-card.state-expense {
+    border-color: #f46a6a;
+    background-color: #fdf5f5;
+}
+
+/* Títulos e Elementos Internos das Etapas */
+.form-step-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--text-dark);
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    margin-bottom: 20px;
+}
+
+.currency-prefix {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-right: 8px;
+}
+
+.input-group input {
+    border: none;
+    outline: none;
+    font-size: 24px;
+    font-weight: 700;
+    width: 100%;
+    color: var(--text-dark);
+}
+
+/* Botão de Avanço: Círculo Branco com Seta Colorida */
+.btn-next-step {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-left: auto;
+    transition: transform 0.2s;
+}
+
+.btn-next-step:hover {
+    transform: scale(1.05);
+}
+
+/* Modificadores de cor para a seta interna do botão */
+.state-revenue .btn-next-step .arrow-icon {
+    color: #34c38f;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.state-expense .btn-next-step .arrow-icon {
+    color: #f46a6a;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+/* Elementos da Etapa 2: Seleção de Categorias */
+.form-select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: var(--bg-surface);
+    font-size: 14px;
+    color: var(--text-dark);
+    margin-bottom: 16px;
+    outline: none;
+}
+
+.custom-category-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    margin-bottom: 16px;
+    outline: none;
+}
+
+.btn-submit-form {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #ffffff;
+}
+
+.state-revenue .btn-submit-form { background-color: #34c38f; }
+.state-expense .btn-submit-form { background-color: #f46a6a; }
