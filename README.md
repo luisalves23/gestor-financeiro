@@ -64,3 +64,9 @@ Aplicativo de planejamento financeiro pessoal desenvolvido para organizar receit
 * **O que foi feito:** Desenvolvi a função `calculateDailyTarget` utilizando os métodos `filter` e `reduce` para processar o saldo líquido atual e projetar a meta de faturamento diário baseada nos passivos em aberto.
 * **Commit Realizado:** feat: implementa motor de calculo e projecao da meta diaria
 * **Raciocínio:** O núcleo inteligente da aplicação foi consolidado. O cálculo lê os dados vivos do estado, eliminando a necessidade de atualizar os saldos do topo manualmente. Utilizei a função de arredondamento para cima para garantir que a meta cubra os centavos dos passivos de forma segura.
+
+### 17/06/2026 | 10:29
+* **Etapa:** Captura de eventos de clique e mutação de estado dinâmico.
+* **O que foi feito:** Desenvolvi a função `handleAddRevenue` associada ao evento `click` do botão de inserção, permitindo injetar novas receitas no array de transações em tempo real.
+* **Commit Realizado:** feat: adiciona escutador de eventos para insercao de novas receitas
+* **Raciocínio:** Este passo valida a reatividade da aplicação. Ao isolar a lógica de captação de dados numa função que dispara os gatilhos de renderização e cálculo sequencialmente, garanto que o utilizador veja o seu saldo subir e a sua meta diária descer no exato segundo em que finaliza o lançamento.

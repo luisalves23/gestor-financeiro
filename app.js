@@ -111,6 +111,32 @@ const calculateDailyTarget = () => {
     document.getElementById('daily-target').innerText = `Meta: ${formatCurrency(targetValue)} por dia`;
 };
 
+// Manipulação de Entradas do Usuário via Eventos
+const handleAddRevenue = () => {
+    const description = prompt("Digite a descrição do ganho (ex: Corrida Uber):");
+    const amountInput = prompt("Digite o valor bruto em Reais (use ponto para centavos):");
+    const amount = parseFloat(amountInput);
+
+    if (description && !isNaN(amount) && amount > 0) {
+        transactions.push({
+            id: transactions.length + 1,
+            type: 'revenue',
+            amount: amount,
+            status: 'recebido',
+            description: description
+        });
+
+        // Reflete as mudanças na interface instantaneamente
+        renderTransactions();
+        calculateDailyTarget();
+    } else {
+        alert("Dados inválidos. A operação foi cancelada.");
+    }
+};
+
+// Vinculação dos botões aos escutadores de eventos
+document.getElementById('btn-add-revenue').addEventListener('click', handleAddRevenue);
+
 // Inicializa a injeção de dados ao carregar a página
 const init = () => {
     renderTransactions();
