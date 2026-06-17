@@ -61,21 +61,15 @@ let tempAmount = 0;
 const transactionsList = document.getElementById("transactions-list");
 const billsList = document.getElementById("bills-list");
 
-const transactionFormContainer = document.getElementById(
-  "transaction-form-container",
-);
+const transactionFormContainer = document.getElementById("transaction-form-container");
 const formTitleText = document.getElementById("form-title-text");
 const selectCategory = document.getElementById("select-category");
-const customCategoryWrapper = document.getElementById(
-  "custom-category-wrapper",
-);
+const customCategoryWrapper = document.getElementById("custom-category-wrapper");
 
 const btnAddRevenue = document.getElementById("btn-add-revenue");
 const btnAddExpense = document.getElementById("btn-add-expense");
 const btnNextToCategory = document.getElementById("btn-next-to-category");
-const btnFinalizeTransaction = document.getElementById(
-  "btn-finalize-transaction",
-);
+const btnFinalizeTransaction = document.getElementById("btn-finalize-transaction");
 const inputAmount = document.getElementById("input-amount");
 const inputCustomCategory = document.getElementById("input-custom-category");
 const formStep1 = document.getElementById("form-step-1");
@@ -192,10 +186,10 @@ const populateCategories = (type) => {
   });
 };
 
-// Configura a exibição inicial do formulário inline
+// Configura a exibição inicial do formulário overlay modal
 const openTransactionForm = (type) => {
   currentFormType = type;
-  transactionFormContainer.style.display = "block";
+  transactionFormContainer.style.display = "flex"; // Alterado de block para flex para centralizar
   formStep1.style.display = "block";
   formStep2.style.display = "none";
   customCategoryWrapper.style.display = "none";
@@ -208,6 +202,13 @@ const openTransactionForm = (type) => {
     type === "revenue" ? "Inserir Ganho" : "Inserir Despesa";
 
   populateCategories(type);
+};
+
+// Limpa e oculta o formulário de forma segura
+const closeTransactionForm = () => {
+  transactionFormContainer.style.display = "none";
+  currentFormType = "";
+  tempAmount = 0;
 };
 
 // Valida a primeira etapa (valor) e avança para a próxima tela
@@ -243,7 +244,7 @@ const handleFinalizeTransaction = () => {
     description: selectedCategory,
   });
 
-  transactionFormContainer.style.display = "none";
+  closeTransactionForm(); // Agora usamos a nova função para fechar
   renderTransactions();
   calculateDailyTarget();
 };
@@ -263,6 +264,14 @@ btnAddRevenue.addEventListener("click", () => openTransactionForm("revenue"));
 btnAddExpense.addEventListener("click", () => openTransactionForm("expense"));
 btnNextToCategory.addEventListener("click", handleNextStep);
 btnFinalizeTransaction.addEventListener("click", handleFinalizeTransaction);
+
+// Escutador inteligente para fechar o modal ao clicar fora do card
+transactionFormContainer.addEventListener("click", (e) => {
+  // Garante que o clique foi no contêiner escuro, e não dentro do card interno
+  if (e.target === transactionFormContainer) {
+    closeTransactionForm();
+  }
+});
 
 // Inicialização global do sistema ao carregar o script
 const init = () => {

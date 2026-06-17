@@ -94,3 +94,9 @@ Aplicativo de planejamento financeiro pessoal desenvolvido para organizar receit
 * **O que foi feito:** Desenvolvi as funções `openTransactionForm`, `handleNextStep` e `handleFinalizeTransaction`, acoplando os escutadores de eventos para gerir a máquina de estados do formulário inline.
 * **Commit Realizado:** feat: consolida controle de etapas e salvamento do formulario dinamico
 * **Raciocínio:** Concluí a substituição dos prompts nativos. O formulário agora opera em duas etapas isoladas dentro da própria interface: valida o valor na primeira tela, carrega as categorias corretas na segunda e injeta o objeto final no array de movimentações. Isso garante uma experiência totalmente integrada e fluida para o uso diário no computador ou tablet.
+
+### 17/06/2026 | 11:20
+* **Etapa:** Ajuste lógico de exibição e encerramento para arquitetura Overlay Modal.
+* **O que foi feito:** Atualizei a função `openTransactionForm` para utilizar display flexível, criei a função de descarte `closeTransactionForm` e adicionei um escutador de eventos no fundo desfocado para encerramento automático.
+* **Commit Realizado:** feat: adapta fluxo javascript para fechar modal e renderizar flexbox
+* **Raciocínio:** Integrar o CSS flutuante exigiu repensar o controle da interface no JS. Utilizar `display: flex` assegura que o card flutue no centro geométrico de qualquer tela. O novo evento de escuta verifica a origem do clique (`e.target === transactionFormContainer`); se o usuário clicar no fundo escuro, a aplicação entende que ele desistiu do preenchimento, esvazia as variáveis de fluxo e oculta a tela de forma segura sem lançar dados corrompidos.
