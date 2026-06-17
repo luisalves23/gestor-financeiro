@@ -58,9 +58,35 @@ const renderTransactions = () => {
     });
 };
 
+const renderBills = () => {
+    billsList.innerHTML = `
+        <div class="table-row header">
+            <div>Valor</div>
+            <div>Status</div>
+            <div>Descrição</div>
+            <div></div>
+        </div>
+    `;
+
+    bills.forEach(bill => {
+        const statusText = bill.status.charAt(0).toUpperCase() + bill.status.slice(1);
+
+        const row = document.createElement('div');
+        row.className = 'table-row';
+        row.innerHTML = `
+            <div>${formatCurrency(bill.amount)}</div>
+            <div><span class="badge ${bill.status}">${statusText}</span></div>
+            <div>${bill.description}</div>
+            <div class="arrow">▼</div>
+        `;
+        billsList.appendChild(row);
+    });
+};
+
 // Inicializa a injeção de dados ao carregar a página
 const init = () => {
     renderTransactions();
+    renderBills();
 };
 
 init();

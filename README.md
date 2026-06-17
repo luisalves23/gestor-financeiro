@@ -52,3 +52,9 @@ Aplicativo de planejamento financeiro pessoal desenvolvido para organizar receit
 - **O que foi feito:** Criei a função `renderTransactions` no JavaScript para iterar sobre o array de estado e construir as linhas da tabela dinamicamente no HTML.
 - **Commit Realizado:** feat: implementa renderizacao dinamica da lista de movimentacoes
 - **Raciocínio:** Isolar a renderização desta tabela em um commit único garante que a lógica de formatação de moeda e a aplicação de classes CSS para o status sejam testadas e validadas antes de avançarmos para o próximo bloco de dados.
+
+### 17/06/2026 | 10:17
+* **Etapa:** Desestruturação de estado (Parte 3 de 3) Injeção de Contas Registradas.
+* **O que foi feito:** Desenvolvi a função `renderBills` no JavaScript para processar o array de contas e atualizar a função de inicialização para desenhar ambas as tabelas simultaneamente ao carregar a página.
+* **Commit Realizado:** feat: implementa renderizacao dinamica da lista de contas
+* **Raciocínio:** Fechamos o ciclo de renderização dinâmica. Agora as duas tabelas dependem exclusivamente dos arrays de estado no JavaScript. Isso significa que qualquer cálculo futuro do motor financeiro terá os dados puros à disposição na memória, sem precisar raspar informações estruturais do HTML.
