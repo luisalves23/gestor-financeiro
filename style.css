@@ -15,10 +15,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family:
-    system-ui,
-    -apple-system,
-    sans-serif;
+  font-family: system-ui, -apple-system, sans-serif;
 }
 
 body {
@@ -181,34 +178,50 @@ header {
   }
 }
 
-/* Container Principal do Formulário Dinâmico */
+/* ===================================================
+   FORMULÁRIO OVERLAY MODAL FLUTUANTE
+   =================================================== */
 .transaction-form-card {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 16px;
+  animation: backdropFadeIn 0.25s ease-out forwards;
+}
+
+.transaction-form-card .form-step {
   background-color: var(--bg-surface);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  padding: 24px;
-  margin-bottom: 24px;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
-}
-
-/* Estados Dinâmicos baseados na operação selecionada */
-.transaction-form-card.state-revenue {
-  border-color: #34c38f;
-  background-color: #f2faf6;
-}
-
-.transaction-form-card.state-expense {
-  border-color: #f46a6a;
-  background-color: #fdf5f5;
-}
-
-/* Títulos e Elementos Internos das Etapas */
-.form-step-title {
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 16px;
   color: var(--text-dark);
+  width: 100%;
+  max-width: 400px;
+  border-radius: var(--radius-lg);
+  padding: 32px 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  animation: modalAppear 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Estados Sólidos com fontes claras para os cards internos */
+.transaction-form-card.state-revenue .form-step {
+  background-color: #34c38f;
+  color: #ffffff;
+}
+
+.transaction-form-card.state-expense .form-step {
+  background-color: #f46a6a;
+  color: #ffffff;
+}
+
+.transaction-form-card.state-revenue .form-step-title,
+.transaction-form-card.state-expense .form-step-title,
+.transaction-form-card.state-revenue .currency-prefix,
+.transaction-form-card.state-expense .currency-prefix {
+  color: #ffffff;
 }
 
 .input-group {
@@ -237,7 +250,32 @@ header {
   color: var(--text-dark);
 }
 
-/* Botão de Avanço: Círculo Branco com Seta Colorida */
+.transaction-form-card.state-revenue .input-group,
+.transaction-form-card.state-expense .input-group,
+.transaction-form-card.state-revenue .form-select,
+.transaction-form-card.state-expense .form-select,
+.transaction-form-card.state-revenue .custom-category-group input,
+.transaction-form-card.state-expense .custom-category-group input {
+  background-color: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.transaction-form-card.state-revenue .input-group input,
+.transaction-form-card.state-expense .input-group input,
+.transaction-form-card.state-revenue .form-select,
+.transaction-form-card.state-expense .form-select,
+.transaction-form-card.state-revenue .custom-category-group input,
+.transaction-form-card.state-expense .custom-category-group input {
+  color: #ffffff;
+}
+
+.transaction-form-card.state-revenue .input-group input::placeholder,
+.transaction-form-card.state-expense .input-group input::placeholder,
+.transaction-form-card.state-revenue .custom-category-group input::placeholder,
+.transaction-form-card.state-expense .custom-category-group input::placeholder {
+  color: rgba(255, 255, 255, 0.65);
+}
+
 .btn-next-step {
   width: 48px;
   height: 48px;
@@ -257,7 +295,6 @@ header {
   transform: scale(1.05);
 }
 
-/* Modificadores de cor para a seta interna do botão */
 .state-revenue .btn-next-step .arrow-icon {
   color: #34c38f;
   font-size: 22px;
@@ -270,7 +307,6 @@ header {
   font-weight: 700;
 }
 
-/* Elementos da Etapa 2: Seleção de Categorias */
 .form-select {
   width: 100%;
   padding: 12px;
@@ -305,14 +341,16 @@ header {
 }
 
 .state-revenue .btn-submit-form {
-  background-color: #34c38f;
+  background-color: #ffffff;
+  color: #34c38f;
 }
 .state-expense .btn-submit-form {
-  background-color: #f46a6a;
+  background-color: #ffffff;
+  color: #f46a6a;
 }
 
 /* ===================================================
-   BOTÃO DE EXCLUSÃO DE LISTAS (PASSO 12.1)
+   BOTÃO DE EXCLUSÃO DE LISTAS
    =================================================== */
 .btn-delete {
   background: transparent;
@@ -320,9 +358,7 @@ header {
   color: var(--text-muted);
   font-size: 14px;
   cursor: pointer;
-  transition:
-    color 0.2s,
-    transform 0.2s;
+  transition: color 0.2s, transform 0.2s;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -332,4 +368,31 @@ header {
 .btn-delete:hover {
   color: #f46a6a;
   transform: scale(1.2);
+}
+
+/* ===================================================
+   MOTORES DE ANIMAÇÃO DE ENTRADA (KEYFRAMES)
+   =================================================== */
+@keyframes backdropFadeIn {
+  from {
+    background-color: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+  }
+  to {
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+}
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }

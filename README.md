@@ -129,3 +129,9 @@ Aplicativo de planejamento financeiro pessoal desenvolvido para organizar receit
 - **O que foi feito:** Criei a função `handleDelete` no JavaScript utilizando o método `filter` para varrer os arrays e remover objetos com base no `data-id`. Implementei o padrão de Delegação de Eventos (`Event Delegation`) nas listas de transações e contas.
 - **Commit Realizado:** feat: implementa logica de exclusao e sincroniza mutacao com local storage
 - **Raciocínio:** Como os botões são gerados e destruídos a todo momento pela renderização, aplicar um ouvinte de clique diretamente em cada botão geraria vazamento de memória. Ao invés disso, coloquei um único ouvinte na div pai da tabela. Quando ocorre um clique, o sistema verifica se o alvo possui a classe `.btn-delete`, realiza a exclusão através de filtro inverso, salva o novo estado no `localStorage` e redesenha a tela instantaneamente.
+
+### 17/06/2026 | 11:21
+* **Etapa:** Sincronização Avançada de Animações do Modal.
+* **O que foi feito:** Criei a animação `@keyframes backdropFadeIn` e a vinculei à classe `.transaction-form-card` para suavizar a entrada do desfoque e opacidade escura. Ajustei o comportamento do card interno para usar uma curva elástica de surgimento.
+* **Commit Realizado:** style: sincroniza animacao do desfoque de fundo com a entrada do modal
+* **Raciocínio:** Descobri que a alternância abrupta de estados via JS quebrava a suavidade dos efeitos de desfoque. Ao delegar o fade-in do background e o blur gaussiano diretamente para uma animação em CSS disparada no nascimento do nó, o plano de fundo recua de forma cinematográfica no exato milissegundo em que o card de dados surge na tela, garantindo o visual limpo exigido para o tablet.
