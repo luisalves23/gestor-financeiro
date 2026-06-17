@@ -58,3 +58,9 @@ Aplicativo de planejamento financeiro pessoal desenvolvido para organizar receit
 * **O que foi feito:** Desenvolvi a função `renderBills` no JavaScript para processar o array de contas e atualizar a função de inicialização para desenhar ambas as tabelas simultaneamente ao carregar a página.
 * **Commit Realizado:** feat: implementa renderizacao dinamica da lista de contas
 * **Raciocínio:** Fechamos o ciclo de renderização dinâmica. Agora as duas tabelas dependem exclusivamente dos arrays de estado no JavaScript. Isso significa que qualquer cálculo futuro do motor financeiro terá os dados puros à disposição na memória, sem precisar raspar informações estruturais do HTML.
+
+### 17/06/2026 | 10:26
+* **Etapa:** Desenvolvimento do motor matemático de projeção diária.
+* **O que foi feito:** Desenvolvi a função `calculateDailyTarget` utilizando os métodos `filter` e `reduce` para processar o saldo líquido atual e projetar a meta de faturamento diário baseada nos passivos em aberto.
+* **Commit Realizado:** feat: implementa motor de calculo e projecao da meta diaria
+* **Raciocínio:** O núcleo inteligente da aplicação foi consolidado. O cálculo lê os dados vivos do estado, eliminando a necessidade de atualizar os saldos do topo manualmente. Utilizei a função de arredondamento para cima para garantir que a meta cubra os centavos dos passivos de forma segura.

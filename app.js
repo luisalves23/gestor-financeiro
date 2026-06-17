@@ -83,10 +83,39 @@ const renderBills = () => {
     });
 };
 
+// Motor de cálculo financeiro
+const calculateDailyTarget = () => {
+    // 1. Somar todas as contas pendentes
+    const totalPendingBills = bills
+        .filter(bill => bill.status === 'pendente')
+        .reduce((sum, bill) => sum + bill.amount, 0);
+
+    // 2. Calcular o saldo líquido atual das movimentações
+    const currentBalance = transactions.reduce((sum, transaction) => {
+        return transaction.type === 'revenue' 
+            ? sum + transaction.amount 
+            : sum - transaction.amount;
+    }, 0);
+
+    // 3. Simulação de tempo: Definir os dias restantes até o vencimento principal
+    // Para o MVP, fixamos em 15 dias para estruturar a lógica matemática base
+    const daysRemaining = 15;
+
+    // 4. Aplicação da equação matemática base
+    const targetValue = daysRemaining > 0 
+        ? Math.ceil((totalPendingBills - currentBalance) / daysRemaining) 
+        : 0;
+
+    // 5. Injeção dos valores calculados nos elementos do HTML
+    document.getElementById('current-balance').innerText = formatCurrency(currentBalance);
+    document.getElementById('daily-target').innerText = `Meta: ${formatCurrency(targetValue)} por dia`;
+};
+
 // Inicializa a injeção de dados ao carregar a página
 const init = () => {
     renderTransactions();
     renderBills();
+    calculateDailyTarget();
 };
 
 init();
