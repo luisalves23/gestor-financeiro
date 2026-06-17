@@ -82,3 +82,9 @@ Aplicativo de planejamento financeiro pessoal desenvolvido para organizar receit
 * **O que foi feito:** Desenvolvi as classes de estilo para o card de formulário, implementando modificadores visuais (`state-revenue` e `state-expense`) e a estilização do botão circular de avanço.
 * **Commit Realizado:** style: implementa classes de estado visual e transições para o formulario
 * **Raciocínio:** Isolei a camada de estilo para garantir que o componente se transforme de forma elegante. Ao utilizar herança de classes do CSS (como `.state-revenue .btn-next-step`), permito que a cor da seta e do botão de submissão mude de forma automática na tela apenas alterando a classe pai via JavaScript, mantendo a folha de estilos limpa e modular.
+
+### 17/06/2026 | 10:56
+* **Etapa:** Reestruturação do fluxo de entrada (Parte 3 de 4) - Catálogo de Categorias.
+* **O que foi feito:** Defini o objeto `categoriesData` com 10 categorias mapeadas para cada tipo de transação e criei a função `populateCategories` junto ao evento de escuta do select.
+* **Commit Realizado:** feat: implementa catalogo de categorias e logica de expansao inline
+* **Raciocínio:** Isolar os dados das categorias num objeto estruturado permite alternar as opções exibidas de forma dinâmica sem duplicar elementos no HTML. O ouvinte de alteração (`change`) monitoriza a escolha do utilizador e exibe o campo oculto para categorias não catalogadas de forma condicional, mantendo a interface limpa.
