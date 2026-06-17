@@ -29,3 +29,38 @@ const billsList = document.getElementById("bills-list");
 const formatCurrency = (value) => {
   return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 };
+
+// Constrói a lista de movimentações
+const renderTransactions = () => {
+    transactionsList.innerHTML = `
+        <div class="table-row header">
+            <div>Valor</div>
+            <div>Status</div>
+            <div>Descrição</div>
+            <div></div>
+        </div>
+    `;
+
+    transactions.forEach(transaction => {
+        const isExpense = transaction.type === 'expense';
+        const sign = isExpense ? '-' : '+';
+        const statusText = transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1);
+
+        const row = document.createElement('div');
+        row.className = 'table-row';
+        row.innerHTML = `
+            <div>${sign} ${formatCurrency(transaction.amount)}</div>
+            <div><span class="badge ${transaction.status}">${statusText}</span></div>
+            <div>${transaction.description}</div>
+            <div class="arrow">▼</div>
+        `;
+        transactionsList.appendChild(row);
+    });
+};
+
+// Inicializa a injeção de dados ao carregar a página
+const init = () => {
+    renderTransactions();
+};
+
+init();
