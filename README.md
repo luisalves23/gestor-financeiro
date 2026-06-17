@@ -131,13 +131,22 @@ Aplicativo de planejamento financeiro pessoal desenvolvido para organizar receit
 - **Raciocínio:** Como os botões são gerados e destruídos a todo momento pela renderização, aplicar um ouvinte de clique diretamente em cada botão geraria vazamento de memória. Ao invés disso, coloquei um único ouvinte na div pai da tabela. Quando ocorre um clique, o sistema verifica se o alvo possui a classe `.btn-delete`, realiza a exclusão através de filtro inverso, salva o novo estado no `localStorage` e redesenha a tela instantaneamente.
 
 ### 17/06/2026 | 11:21
-* **Etapa:** Sincronização Avançada de Animações do Modal.
-* **O que foi feito:** Criei a animação `@keyframes backdropFadeIn` e a vinculei à classe `.transaction-form-card` para suavizar a entrada do desfoque e opacidade escura. Ajustei o comportamento do card interno para usar uma curva elástica de surgimento.
-* **Commit Realizado:** style: sincroniza animacao do desfoque de fundo com a entrada do modal
-* **Raciocínio:** Descobri que a alternância abrupta de estados via JS quebrava a suavidade dos efeitos de desfoque. Ao delegar o fade-in do background e o blur gaussiano diretamente para uma animação em CSS disparada no nascimento do nó, o plano de fundo recua de forma cinematográfica no exato milissegundo em que o card de dados surge na tela, garantindo o visual limpo exigido para o tablet.
+
+- **Etapa:** Sincronização Avançada de Animações do Modal.
+- **O que foi feito:** Criei a animação `@keyframes backdropFadeIn` e a vinculei à classe `.transaction-form-card` para suavizar a entrada do desfoque e opacidade escura. Ajustei o comportamento do card interno para usar uma curva elástica de surgimento.
+- **Commit Realizado:** style: sincroniza animacao do desfoque de fundo com a entrada do modal
+- **Raciocínio:** Descobri que a alternância abrupta de estados via JS quebrava a suavidade dos efeitos de desfoque. Ao delegar o fade-in do background e o blur gaussiano diretamente para uma animação em CSS disparada no nascimento do nó, o plano de fundo recua de forma cinematográfica no exato milissegundo em que o card de dados surge na tela, garantindo o visual limpo exigido para o tablet.
 
 ### 17/06/2026 | 11:25
-* **Etapa:** Supressão de Elementos Nativos e Refinamento de Inputs de Form.
-* **O que foi feito:** Ocultei os botões de spinner do input de número no CSS via seletores pseudo-elemento e eliminei o background sólido da caixa do formulário, adotando um modelo de linha base (`border-bottom`) translúcido.
-* **Commit Realizado:** style: remove spinners nativos do input e aplica linha base minimalista
-* **Raciocínio:** O navegador injetava estilos rígidos em campos `type="number"`. Ao forçar `background: transparent` com a flag `!important` e zerar as bordas laterais e superiores, o input se dissolve no fundo do modal. O uso das regras `-webkit-outer-spin-button` removeu os botões de incremento, deixando o campo focado apenas no texto digitado pelo usuário.
+
+- **Etapa:** Supressão de Elementos Nativos e Refinamento de Inputs de Form.
+- **O que foi feito:** Ocultei os botões de spinner do input de número no CSS via seletores pseudo-elemento e eliminei o background sólido da caixa do formulário, adotando um modelo de linha base (`border-bottom`) translúcido.
+- **Commit Realizado:** style: remove spinners nativos do input e aplica linha base minimalista
+- **Raciocínio:** O navegador injetava estilos rígidos em campos `type="number"`. Ao forçar `background: transparent` com a flag `!important` e zerar as bordas laterais e superiores, o input se dissolve no fundo do modal. O uso das regras `-webkit-outer-spin-button` removeu os botões de incremento, deixando o campo focado apenas no texto digitado pelo usuário.
+
+### 17/06/2026 | 11:28
+
+- **Etapa:** Sobrescrita de Máscara de Placeholder Condicional por Estado.
+- **O que foi feito:** Defini cores pastéis específicas para as propriedades `::placeholder` segregadas por estado (`#bbf3db` e `#fcc9c5`) e forcei a neutralização da opacidade nativa do navegador.
+- **Commit Realizado:** style: calibra tom dos placeholders para branco esverdeado e avermelhado opaco
+- **Raciocínio:** Identifiquei que os navegadores aplicavam um filtro cinza semitransparente sobre placeholders numéricos. Ao isolar os seletores por tipo de operação e cravar a propriedade `opacity: 1 !important`, rompi o padrão cinzento do browser, garantindo que o valor de espera adote um tom menta pastel totalmente integrado à identidade visual cromática do card.

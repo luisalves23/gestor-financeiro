@@ -264,6 +264,19 @@ header {
   -moz-appearance: textfield;
 }
 
+/* Sobrescrita Condicional dos Placeholders para Cores Opacas Customizadas */
+.transaction-form-card.state-revenue .input-group input::placeholder,
+.transaction-form-card.state-revenue .custom-category-group input::placeholder {
+  color: #bbf3db !important;
+  opacity: 1 !important;
+}
+
+.transaction-form-card.state-expense .input-group input::placeholder,
+.transaction-form-card.state-expense .custom-category-group input::placeholder {
+  color: #fcc9c5 !important;
+  opacity: 1 !important;
+}
+
 /* Elementos da Etapa 2: Seleção de Categorias Translucidas */
 .transaction-form-card.state-revenue .form-select,
 .transaction-form-card.state-expense .form-select,
@@ -272,11 +285,6 @@ header {
   background-color: rgba(255, 255, 255, 0.18);
   border: 1px solid rgba(255, 255, 255, 0.25);
   color: #ffffff;
-}
-
-.transaction-form-card.state-revenue .custom-category-group input::placeholder,
-.transaction-form-card.state-expense .custom-category-group input::placeholder {
-  color: rgba(255, 255, 255, 0.65);
 }
 
 .form-select {
