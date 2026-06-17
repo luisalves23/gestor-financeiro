@@ -135,3 +135,9 @@ Aplicativo de planejamento financeiro pessoal desenvolvido para organizar receit
 * **O que foi feito:** Criei a animação `@keyframes backdropFadeIn` e a vinculei à classe `.transaction-form-card` para suavizar a entrada do desfoque e opacidade escura. Ajustei o comportamento do card interno para usar uma curva elástica de surgimento.
 * **Commit Realizado:** style: sincroniza animacao do desfoque de fundo com a entrada do modal
 * **Raciocínio:** Descobri que a alternância abrupta de estados via JS quebrava a suavidade dos efeitos de desfoque. Ao delegar o fade-in do background e o blur gaussiano diretamente para uma animação em CSS disparada no nascimento do nó, o plano de fundo recua de forma cinematográfica no exato milissegundo em que o card de dados surge na tela, garantindo o visual limpo exigido para o tablet.
+
+### 17/06/2026 | 11:25
+* **Etapa:** Supressão de Elementos Nativos e Refinamento de Inputs de Form.
+* **O que foi feito:** Ocultei os botões de spinner do input de número no CSS via seletores pseudo-elemento e eliminei o background sólido da caixa do formulário, adotando um modelo de linha base (`border-bottom`) translúcido.
+* **Commit Realizado:** style: remove spinners nativos do input e aplica linha base minimalista
+* **Raciocínio:** O navegador injetava estilos rígidos em campos `type="number"`. Ao forçar `background: transparent` com a flag `!important` e zerar as bordas laterais e superiores, o input se dissolve no fundo do modal. O uso das regras `-webkit-outer-spin-button` removeu os botões de incremento, deixando o campo focado apenas no texto digitado pelo usuário.

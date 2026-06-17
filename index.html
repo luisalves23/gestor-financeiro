@@ -14,39 +14,60 @@
 
       <main id="app-content">
         <aside class="sidebar-section">
-                <section class="overview-card">
-                    <div class="label">Saldo atual hoje</div>
-                    <div class="balance" id="current-balance">R$ 126,74</div>
-                    <div class="target" id="daily-target">Meta: R$ 240,00</div>
-                    <div class="btn-group">
-                        <button class="btn-add" id="btn-add-revenue">Adicionar</button>
-                        <button class="btn-minus" id="btn-add-expense">-</button>
-                    </div>
-                </section>
+          <section class="overview-card">
+            <div class="label">Saldo atual hoje</div>
+            <div class="balance" id="current-balance">R$ 126,74</div>
+            <div class="target" id="daily-target">Meta: R$ 240,00</div>
+            <div class="btn-group">
+              <button class="btn-add" id="btn-add-revenue">Adicionar</button>
+              <button class="btn-minus" id="btn-add-expense">-</button>
+            </div>
+          </section>
 
-                <div class="transaction-form-card" id="transaction-form-container" style="display: none;">
-                    <div class="form-step active" id="form-step-1">
-                        <h3 class="form-step-title" id="form-title-text">Inserir Valor</h3>
-                        <div class="input-group">
-                            <span class="currency-prefix">R$</span>
-                            <input type="number" id="input-amount" placeholder="0,00" step="0.01" min="0.01">
-                        </div>
-                        <button class="btn-next-step" id="btn-next-to-category">
-                            <span class="arrow-icon">→</span>
-                        </button>
-                    </div>
+          <div
+            class="transaction-form-card"
+            id="transaction-form-container"
+            style="display: none"
+          >
+            <div class="form-step active" id="form-step-1">
+              <h3 class="form-step-title" id="form-title-text">
+                Inserir Valor
+              </h3>
+              <div class="input-group">
+                <span class="currency-prefix">R$</span>
+                <input
+                  type="number"
+                  id="input-amount"
+                  placeholder="0.00"
+                  step="0.01"
+                  min="0.01"
+                />
+              </div>
+              <button class="btn-next-step" id="btn-next-to-category">
+                <span class="arrow-icon">→</span>
+              </button>
+            </div>
 
-                    <div class="form-step" id="form-step-2" style="display: none;">
-                        <h3 class="form-step-title">Selecionar Categoria</h3>
-                        <select id="select-category" class="form-select">
-                            </select>
-                        <div class="custom-category-group" id="custom-category-wrapper" style="display: none;">
-                            <input type="text" id="input-custom-category" placeholder="Nome da nova categoria">
-                        </div>
-                        <button class="btn-submit-form" id="btn-finalize-transaction">Salvar Lançamento</button>
-                    </div>
-                </div>
-            </aside>
+            <div class="form-step" id="form-step-2" style="display: none">
+              <h3 class="form-step-title">Selecionar Categoria</h3>
+              <select id="select-category" class="form-select"></select>
+              <div
+                class="custom-category-group"
+                id="custom-category-wrapper"
+                style="display: none"
+              >
+                <input
+                  type="text"
+                  id="input-custom-category"
+                  placeholder="Nome da nova categoria"
+                />
+              </div>
+              <button class="btn-submit-form" id="btn-finalize-transaction">
+                Salvar Lançamento
+              </button>
+            </div>
+          </div>
+        </aside>
 
         <section class="data-section">
           <h2 class="section-title">Movimentações Recentes</h2>
