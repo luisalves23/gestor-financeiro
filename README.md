@@ -178,3 +178,10 @@ Aplicativo de planejamento financeiro pessoal desenvolvido para organizar receit
 - **O que foi feito:** Adaptei a Etapa 2 do modal flutuante no `index.html` para incluir um campo nativo de data (`type="date"`) envolto em um `date-wrapper` oculto. No CSS, injetei um filtro de inversão para tornar o ícone nativo do calendário branco.
 - **Commit Realizado:** feat: insere estrutura de captura de tempo no modal dinamico
 - **Raciocínio:** Adotar um único modal para todas as inserções limpa a interface e evita fadiga visual. A estratégia arquitetural aqui é injetar o campo de data no formulário existente de forma encapsulada (`display: none`). O JavaScript assumirá a inteligência de exibir esse campo exclusivamente quando a intenção do usuário for cadastrar um passivo ("Conta"). O filtro CSS `invert(1)` é uma solução de engenharia cirúrgica para contornar limitações de customização impostas por navegadores sobre inputs de tempo nativos.
+
+### 17/06/2026 | 12:00
+
+- **Etapa:** Configuração do Novo Grid de Dashboard Responsivo (Parte 3 de 5) - Migração de Schema para V2.
+- **O que foi feito:** Adicionei a propriedade `dueDate` nos objetos do array `bills`, configurei uma chave de banco de dados nova (`_v2`) no `localStorage` para forçar um reset da memória corrompida e implementei um particionador de strings para renderizar dia e mês na listagem.
+- **Commit Realizado:** refactor: executa schema migration no estado adicionando suporte a data
+- **Raciocínio:** Modificar a arquitetura de dados (schema) com usuários em "produção" requer cuidado. Se eu não alterasse a chave do `localStorage`, a nova versão do código calcularia o tempo contra contas que não possuíam data, devolvendo quebras matemáticas crônicas (`NaN`). Alterar a chave para `gf_bills_v2` funciona como um "Wipe" (limpeza) seguro de banco de dados, forçando o navegador a baixar a nova estrutura limpa de demonstração que inclui as datas de vencimento, preparando o terreno para o motor matemático na próxima fase.
