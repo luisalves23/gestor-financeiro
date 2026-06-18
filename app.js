@@ -88,7 +88,7 @@ const customCategoryWrapper = document.getElementById(
 
 const btnAddRevenue = document.getElementById("btn-add-revenue");
 const btnAddExpense = document.getElementById("btn-add-expense");
-const btnOpenBillModal = document.getElementById("btn-open-bill-modal"); // NOVO BOTÃO DE CONTAS
+const btnOpenBillModal = document.getElementById("btn-open-bill-modal");
 const btnNextToCategory = document.getElementById("btn-next-to-category");
 const btnFinalizeTransaction = document.getElementById(
   "btn-finalize-transaction",
@@ -96,8 +96,8 @@ const btnFinalizeTransaction = document.getElementById(
 
 const inputAmount = document.getElementById("input-amount");
 const inputCustomCategory = document.getElementById("input-custom-category");
-const inputDueDate = document.getElementById("input-due-date"); // NOVO INPUT DE DATA
-const dateWrapper = document.getElementById("date-wrapper"); // NOVO CONTAINER DA DATA
+const inputDueDate = document.getElementById("input-due-date");
+const dateWrapper = document.getElementById("date-wrapper");
 
 const formStep1 = document.getElementById("form-step-1");
 const formStep2 = document.getElementById("form-step-2");
@@ -115,7 +115,7 @@ const formatCurrency = (value) => {
   return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 };
 
-// Motor Financeiro Híbrido com Inteligência Temporal
+// Motor Financeiro Híbrido: Meta Congelada e Saldo Global
 const calculateDailyTarget = () => {
   const now = new Date();
   const todayZero = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -123,9 +123,13 @@ const calculateDailyTarget = () => {
   let cargaFuturaDiaria = 0;
   let totalAtrasado = 0;
   let totalContasObrigacoes = 0;
+  let totalContasPagas = 0; // Armazena o valor das contas já liquidadas
 
   bills.forEach((bill) => {
-    if (bill.status === "pago") return;
+    if (bill.status === "pago") {
+      totalContasPagas += bill.amount;
+      return;
+    }
 
     totalContasObrigacoes += bill.amount;
 
@@ -142,22 +146,28 @@ const calculateDailyTarget = () => {
     }
   });
 
+  // Saldo Hoje (O esforço do bonequinho subindo a montanha)
   const currentBalance = transactions.reduce((sum, transaction) => {
     return transaction.type === "revenue"
       ? sum + transaction.amount
       : sum - transaction.amount;
   }, 0);
 
-  const cargaAtrasoDiaria = Math.min(totalAtrasado, 100);
-  const metaDoDia = Math.ceil(
-    cargaFuturaDiaria + cargaAtrasoDiaria - currentBalance,
-  );
-  const displayTarget = metaDoDia > 0 ? metaDoDia : 0;
+  // Saldo Global em Conta (Faturamento total líquido menos obrigações quitadas)
+  const bankBalance = currentBalance - totalContasPagas;
 
+  const cargaAtrasoDiaria = Math.min(totalAtrasado, 100);
+
+  // NOVO: A meta do dia agora é CONGELADA. Não subtrai mais o currentBalance.
+  const metaDoDia = Math.ceil(cargaFuturaDiaria + cargaAtrasoDiaria);
+
+  // Injeção de valores na interface
   document.getElementById("current-balance").innerText =
     formatCurrency(currentBalance);
+  document.getElementById("bank-balance-text").innerText =
+    `Saldo em conta: ${formatCurrency(bankBalance)}`;
   document.getElementById("daily-target").innerText =
-    `Meta: ${formatCurrency(displayTarget)} por dia`;
+    `Meta de hoje: ${formatCurrency(metaDoDia)}`;
 
   document.getElementById("bills-total").innerText = formatCurrency(
     totalContasObrigacoes,
@@ -172,27 +182,27 @@ const calculateDailyTarget = () => {
     remainingTextElement.style.color = "";
   }
 
-  const escorçoIdealDia = cargaFuturaDiaria + cargaAtrasoDiaria;
+  // Semáforo Psicológico: Compara o Saldo Hoje contra a Meta Congelada
   overviewCard.className = "overview-card";
 
-  if (escorçoIdealDia === 0) {
+  if (metaDoDia === 0) {
     if (currentBalance < 0) overviewCard.classList.add("status-danger");
     else if (currentBalance > 0) overviewCard.classList.add("status-premium");
     else overviewCard.classList.add("status-success");
   } else {
-    if (currentBalance < 0 || currentBalance < escorçoIdealDia * 0.5) {
+    if (currentBalance < 0 || currentBalance < metaDoDia * 0.5) {
       overviewCard.classList.add("status-danger");
     } else if (
-      currentBalance >= escorçoIdealDia * 0.5 &&
-      currentBalance < escorçoIdealDia
+      currentBalance >= metaDoDia * 0.5 &&
+      currentBalance < metaDoDia
     ) {
       overviewCard.classList.add("status-warning");
     } else if (
-      currentBalance >= escorçoIdealDia &&
-      currentBalance < escorçoIdealDia * 1.15
+      currentBalance >= metaDoDia &&
+      currentBalance < metaDoDia * 1.15
     ) {
       overviewCard.classList.add("status-success");
-    } else if (currentBalance >= escorçoIdealDia * 1.15) {
+    } else if (currentBalance >= metaDoDia * 1.15) {
       overviewCard.classList.add("status-premium");
     }
   }
@@ -252,7 +262,6 @@ const renderBills = () => {
       const [year, month, day] = bill.dueDate.split("-");
       dateDisplay = `${day}/${month} - `;
 
-      // Lógica de Etiquetas Dinâmicas de Urgência
       if (bill.status !== "pago") {
         const billDate = new Date(year, month - 1, day);
         const diffDays = Math.ceil(
@@ -262,11 +271,11 @@ const renderBills = () => {
         if (diffDays < 0) {
           statusText = `Atrasada (${Math.abs(diffDays)}d)`;
           inlineStyle =
-            "background-color: #fdf5f5; color: #f46a6a; border: 1px solid #f46a6a;"; // Alerta Vermelho
+            "background-color: #fdf5f5; color: #f46a6a; border: 1px solid #f46a6a;";
         } else if (diffDays === 0) {
           statusText = `Vence Hoje`;
           inlineStyle =
-            "background-color: #fff4de; color: #f1b44c; border: 1px solid #f1b44c;"; // Alerta Laranja
+            "background-color: #fff4de; color: #f1b44c; border: 1px solid #f1b44c;";
         }
       }
     }
@@ -288,7 +297,6 @@ const renderBills = () => {
 // ==========================================
 
 const populateCategories = (type) => {
-  // Se for 'bill', usa as categorias de despesa
   const listType = type === "bill" ? "expense" : type;
   const list = categoriesData[listType];
   selectCategory.innerHTML = "";
@@ -301,7 +309,6 @@ const populateCategories = (type) => {
   });
 };
 
-// Multiplexador de Modais: Configura a interface com base no botão clicado
 const openTransactionForm = (type) => {
   currentFormType = type;
   transactionFormContainer.style.display = "flex";
@@ -311,17 +318,17 @@ const openTransactionForm = (type) => {
 
   inputAmount.value = "";
   inputCustomCategory.value = "";
-  inputDueDate.value = ""; // Limpa a data
+  inputDueDate.value = "";
 
   if (type === "bill") {
-    transactionFormContainer.className = `transaction-form-card state-expense`; // Usa o fundo vermelho
+    transactionFormContainer.className = `transaction-form-card state-expense`;
     formTitleText.textContent = "Inserir Conta Fixa";
-    dateWrapper.style.display = "block"; // Revela o calendário
+    dateWrapper.style.display = "block";
   } else {
     transactionFormContainer.className = `transaction-form-card state-${type}`;
     formTitleText.textContent =
       type === "revenue" ? "Inserir Ganho" : "Inserir Despesa";
-    dateWrapper.style.display = "none"; // Esconde o calendário
+    dateWrapper.style.display = "none";
   }
 
   populateCategories(type);
@@ -356,7 +363,6 @@ const handleFinalizeTransaction = () => {
     return;
   }
 
-  // Roteamento condicional de salvamento
   if (currentFormType === "bill") {
     const dueDate = inputDueDate.value;
     if (!dueDate) {
@@ -387,7 +393,7 @@ const handleFinalizeTransaction = () => {
   saveData();
   closeTransactionForm();
   renderTransactions();
-  renderBills(); // Redesenha a lista de contas garantindo que a nova apareça
+  renderBills();
   calculateDailyTarget();
 };
 
@@ -424,7 +430,7 @@ selectCategory.addEventListener("change", (e) => {
 
 btnAddRevenue.addEventListener("click", () => openTransactionForm("revenue"));
 btnAddExpense.addEventListener("click", () => openTransactionForm("expense"));
-btnOpenBillModal.addEventListener("click", () => openTransactionForm("bill")); // ESCUTADOR DO CARD DE CONTAS
+btnOpenBillModal.addEventListener("click", () => openTransactionForm("bill"));
 btnNextToCategory.addEventListener("click", handleNextStep);
 btnFinalizeTransaction.addEventListener("click", handleFinalizeTransaction);
 

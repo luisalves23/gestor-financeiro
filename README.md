@@ -205,3 +205,9 @@ Aplicativo de planejamento financeiro pessoal desenvolvido para organizar receit
 * **O que foi feito:** Ajustei a renderização das tabelas no CSS usando `white-space: nowrap` para evitar esmagamento das etiquetas textuais de atraso. No HTML, alterei os rótulos do Card de Saldo Geral e adicionei o contêiner estrutural do novo "Saldo em conta".
 * **Commit Realizado:** style: corrige quebra de layout nas etiquetas de status e atualiza html do card de saldo
 * **Raciocínio:** O motor temporal injetou a data na etiqueta de status, o que gerou excesso de caracteres e forçou o CSS Grid a quebrar a linha, destruindo a pílula colorida. Ao proibir a quebra de linha com `nowrap` e dar uma fração extra (`0.2fr`) para a coluna de status, garantimos que o design system se mantenha imaculado. Simultaneamente, preparei o DOM com o ID `bank-balance-text` para a nova lógica de "Estoque vs Fluxo Diário" que virá no JavaScript.
+
+### 18/06/2026 | 08:45
+* **Etapa:** Configuração do Alvo Fixo (Parte 2 de 3) - Motor de Meta Congelada e Saldo Global.
+* **O que foi feito:** Eliminei o recálculo dinâmico da meta diária, fixando o valor ideal do dia de forma estática no painel. Implementei a variável matemática `bankBalance` calculada nativamente como a diferença entre o saldo de faturamento livre e as contas com status `pago`.
+* **Commit Realizado:** feat: implementa logica de meta fixa e calcula saldo bancario global
+* **Raciocínio:** O motor matemático anterior sofria do "Paradoxo do Alvo Móvel" (a meta caía conforme o usuário lucrava, ocultando o esforço inicial). Congelar a variável `metaDoDia` proporciona um direcionamento psicológico muito mais sólido: a meta vira o topo da montanha, e o saldo do dia torna-se o avatar subindo até ela. Ao rastrear as contas já pagas de forma passiva, a aplicação exibe o "Saldo em conta" em tempo real, entregando uma visão de caixa geral e separando, de uma vez por todas, o fluxo de rua do dinheiro no banco.
