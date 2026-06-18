@@ -123,7 +123,7 @@ const calculateDailyTarget = () => {
   let cargaFuturaDiaria = 0;
   let totalAtrasado = 0;
   let totalContasObrigacoes = 0;
-  let totalContasPagas = 0; // Armazena o valor das contas já liquidadas
+  let totalContasPagas = 0;
 
   bills.forEach((bill) => {
     if (bill.status === "pago") {
@@ -146,22 +146,16 @@ const calculateDailyTarget = () => {
     }
   });
 
-  // Saldo Hoje (O esforço do bonequinho subindo a montanha)
   const currentBalance = transactions.reduce((sum, transaction) => {
     return transaction.type === "revenue"
       ? sum + transaction.amount
       : sum - transaction.amount;
   }, 0);
 
-  // Saldo Global em Conta (Faturamento total líquido menos obrigações quitadas)
   const bankBalance = currentBalance - totalContasPagas;
-
   const cargaAtrasoDiaria = Math.min(totalAtrasado, 100);
-
-  // NOVO: A meta do dia agora é CONGELADA. Não subtrai mais o currentBalance.
   const metaDoDia = Math.ceil(cargaFuturaDiaria + cargaAtrasoDiaria);
 
-  // Injeção de valores na interface
   document.getElementById("current-balance").innerText =
     formatCurrency(currentBalance);
   document.getElementById("bank-balance-text").innerText =
@@ -182,7 +176,6 @@ const calculateDailyTarget = () => {
     remainingTextElement.style.color = "";
   }
 
-  // Semáforo Psicológico: Compara o Saldo Hoje contra a Meta Congelada
   overviewCard.className = "overview-card";
 
   if (metaDoDia === 0) {
@@ -234,7 +227,9 @@ const renderTransactions = () => {
             <div>${sign} ${formatCurrency(transaction.amount)}</div>
             <div><span class="badge ${transaction.status}">${statusText}</span></div>
             <div>${transaction.description}</div>
-            <div><button class="btn-delete" data-id="${transaction.id}">✖</button></div>
+            <div class="action-group">
+                <button class="btn-delete" data-id="${transaction.id}">✖</button>
+            </div>
         `;
     transactionsList.appendChild(row);
   });
@@ -280,13 +275,20 @@ const renderBills = () => {
       }
     }
 
+    // Lógica Visual: O botão de check só aparece se a conta não estiver paga
+    const actionButtons =
+      bill.status !== "pago"
+        ? `<button class="btn-check" data-id="${bill.id}">✔</button>
+           <button class="btn-delete" data-id="${bill.id}">✖</button>`
+        : `<button class="btn-delete" data-id="${bill.id}">✖</button>`;
+
     const row = document.createElement("div");
     row.className = "table-row";
     row.innerHTML = `
             <div>${formatCurrency(bill.amount)}</div>
             <div><span class="badge ${bill.status}" style="${inlineStyle}">${dateDisplay}${statusText}</span></div>
             <div>${bill.description}</div>
-            <div><button class="btn-delete" data-id="${bill.id}">✖</button></div>
+            <div class="action-group">${actionButtons}</div>
         `;
     billsList.appendChild(row);
   });
@@ -397,28 +399,57 @@ const handleFinalizeTransaction = () => {
   calculateDailyTarget();
 };
 
-const handleDelete = (e, listType) => {
+// ==========================================
+// 6. CONTROLADORES DE AÇÃO DAS LISTAS (NOVO)
+// ==========================================
+
+const handleTransactionAction = (e) => {
   const deleteBtn = e.target.closest(".btn-delete");
-  if (!deleteBtn) return;
-
-  const id = parseInt(deleteBtn.getAttribute("data-id"));
-
-  if (confirm("Tem certeza que deseja excluir este registro?")) {
-    if (listType === "transaction") {
+  if (deleteBtn) {
+    const id = parseInt(deleteBtn.getAttribute("data-id"));
+    if (confirm("Tem certeza que deseja excluir este lançamento?")) {
       transactions = transactions.filter((t) => t.id !== id);
-    } else if (listType === "bill") {
-      bills = bills.filter((b) => b.id !== id);
+      saveData();
+      renderTransactions();
+      calculateDailyTarget();
     }
+  }
+};
 
-    saveData();
-    renderTransactions();
-    renderBills();
-    calculateDailyTarget();
+const handleBillAction = (e) => {
+  const deleteBtn = e.target.closest(".btn-delete");
+  const checkBtn = e.target.closest(".btn-check");
+
+  if (deleteBtn) {
+    const id = parseInt(deleteBtn.getAttribute("data-id"));
+    if (confirm("Tem certeza que deseja excluir esta conta?")) {
+      bills = bills.filter((b) => b.id !== id);
+      saveData();
+      renderBills();
+      calculateDailyTarget();
+    }
+  }
+
+  if (checkBtn) {
+    const id = parseInt(checkBtn.getAttribute("data-id"));
+    if (
+      confirm(
+        "Confirmar o pagamento desta obrigação? O valor será deduzido do Saldo em Conta.",
+      )
+    ) {
+      const billToUpdate = bills.find((b) => b.id === id);
+      if (billToUpdate) {
+        billToUpdate.status = "pago";
+        saveData();
+        renderBills();
+        calculateDailyTarget();
+      }
+    }
   }
 };
 
 // ==========================================
-// 6. ADICIONA OS ESCUTADORES DE EVENTOS
+// 7. ADICIONA OS ESCUTADORES DE EVENTOS
 // ==========================================
 selectCategory.addEventListener("change", (e) => {
   if (e.target.value === "Outra...") {
@@ -440,10 +471,8 @@ transactionFormContainer.addEventListener("click", (e) => {
   }
 });
 
-transactionsList.addEventListener("click", (e) =>
-  handleDelete(e, "transaction"),
-);
-billsList.addEventListener("click", (e) => handleDelete(e, "bill"));
+transactionsList.addEventListener("click", handleTransactionAction);
+billsList.addEventListener("click", handleBillAction);
 
 // Inicialização global
 const init = () => {
